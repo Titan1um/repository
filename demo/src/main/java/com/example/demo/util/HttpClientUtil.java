@@ -144,7 +144,6 @@
 /*     */   {
 /* 131 */     CloseableHttpClient client = null;
 /* 132 */     CloseableHttpResponse response = null;
-/* 133 */     reString = null;
 /*     */     try {
 /* 135 */       client = HttpClients.createDefault();
 /* 136 */       response = client.execute(httpGet);
@@ -160,6 +159,7 @@
 /* 146 */         e.printStackTrace();
 /*     */       }
 /*     */     }
+				return null;
 /*     */   }
 /*     */   
 /*     */ 
@@ -231,7 +231,3 @@
 /*     */ }
 
 
-/* Location:              C:\Users\lenovo\Desktop\demo-0.0.1-SNAPSHOT.jar!\BOOT-INF\classes\com\example\demo\util\HttpClientUtil.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */

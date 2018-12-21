@@ -254,15 +254,11 @@
 /* 254 */     JSONArray jsonArray = jsonObject.getJSONArray("data");
 /* 255 */     int length = jsonArray.length();
 /* 256 */     for (int i = 0; i < length; i++) {
-/* 257 */       if (jsonArray.getJSONObject(i).getString("status").equals("61"))
-/* 258 */         System.out.println(jsonArray.getJSONObject(i));
+/* 257 */       if (jsonArray.getJSONObject(i).getString("status").equals("61")) {
+					System.out.println(jsonArray.getJSONObject(i));
+	}
 /*     */     }
 /* 260 */     return jsonObject.toString();
 /*     */   }
 /*     */ }
 
-
-/* Location:              C:\Users\lenovo\Desktop\demo-0.0.1-SNAPSHOT.jar!\BOOT-INF\classes\com\example\demo\util\GetVideoList.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */
