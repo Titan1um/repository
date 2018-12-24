@@ -24,7 +24,7 @@ public class DBManager {
 		String sql = "insert into upload(type,vid,t) values(?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = ConnectUtil.getInstance();
+			this.conn = new ConnectUtil().getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));
@@ -49,7 +49,7 @@ public class DBManager {
 		String sql = "insert into encode(type,vid,format,df,t) values(?,?,?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = ConnectUtil.getInstance();
+			this.conn = new ConnectUtil().getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));
@@ -74,7 +74,7 @@ public class DBManager {
 		String sql = "insert into establish(type,vid,t) values(?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = ConnectUtil.getInstance();
+			this.conn = new ConnectUtil().getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));

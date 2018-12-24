@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.util.HttpClientUtil;
 
-import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
