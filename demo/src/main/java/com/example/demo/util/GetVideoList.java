@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -151,11 +152,12 @@ public class GetVideoList {
 
 
 			response.close();
-			httpClient.close();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			httpClient.close();
 		}
 	}
 
@@ -169,9 +171,8 @@ public class GetVideoList {
 				System.out.println(jsonArray.getJSONObject(i));
 
 			}
-			return jsonObject.toString();
 		}
-		return null;
+		return jsonObject.toString();
 	}
 }
 
