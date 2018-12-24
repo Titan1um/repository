@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.nio.charset.Charset;
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.demo.util.InfoLogger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +15,34 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CallBack {
+	@Autowired
+	InfoLogger infoLogger;
 	private final String _SECRETKEY_ = "qW4nvoVVi5";
 	@Autowired
 	private DBManager dbManager;
 
-	public void save(HttpServletRequest req) throws Exception {
+	public void save(HttpServletRequest req){
 		String opt = cmpSign(req);
-		switch (opt) {
-			case "upload":
-				this.dbManager.saveUpload(saveUpload(req));
-				break;
-			case "encode":
-				this.dbManager.saveEncode(saveEncode(req));
-				break;
-			case "check":
-				this.dbManager.saveCheck(saveCheck(req));
-				break;
-			case "wrong encrypt":
-				System.out.println("Encryption is not right");
-				break;
-			default:
-				System.out.println("error:mtfk.");
+		try {
+			switch (opt) {
+				case "upload":
+					this.dbManager.saveUpload(saveUpload(req));
+					break;
+				case "encode":
+					this.dbManager.saveEncode(saveEncode(req));
+					break;
+				case "check":
+					this.dbManager.saveCheck(saveCheck(req));
+					break;
+				case "wrong encrypt":
+					System.out.println("Encryption is not right");
+					break;
+				default:
+					System.out.println("error:mtfk.");
+			}
+		}catch (Exception e){
+			infoLogger.log(e.toString());
+			e.printStackTrace();
 		}
 
 	}

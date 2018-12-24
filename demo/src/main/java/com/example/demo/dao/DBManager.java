@@ -7,10 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.example.demo.util.InfoLogger;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @org.springframework.stereotype.Component
 public class DBManager {
+	@Autowired
+	InfoLogger infoLogger;
 	Connection conn = null;
 
 	public void saveUpload(JSONObject jsonObject) {
@@ -24,14 +28,14 @@ public class DBManager {
 			pst.executeUpdate();
 			pst.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			infoLogger.log(e.toString());
 		} finally {
 			try {
 				if (null != pst) {
 					pst.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				infoLogger.log(e.toString());
 			}
 		}
 
@@ -50,14 +54,14 @@ public class DBManager {
 			pst.setString(4, jsonObject.getString("df"));
 			pst.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			infoLogger.log(e.toString());
 		} finally {
 			try {
 				if (null != pst) {
 					pst.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				infoLogger.log(e.toString());
 			}
 		}
 		System.out.println("Saved Encode.");
@@ -73,14 +77,14 @@ public class DBManager {
 			pst.setString(2, jsonObject.getString("vid"));
 			pst.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			infoLogger.log(e.toString());
 		} finally {
 			try {
 				if (null != pst) {
 					pst.close();
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				infoLogger.log(e.toString());
 			}
 		}
 		System.out.println("Saved check.");
@@ -91,7 +95,7 @@ public class DBManager {
 		try {
 			super.finalize();
 		} catch (Throwable throwable) {
-			throwable.printStackTrace();
+			infoLogger.log(throwable.toString());
 		}
 
 		if (null == conn) {
@@ -100,6 +104,7 @@ public class DBManager {
 		try {
 			conn.close();
 		} catch (SQLException e) {
+			infoLogger.log(e.toString());
 			e.printStackTrace();
 		}
 

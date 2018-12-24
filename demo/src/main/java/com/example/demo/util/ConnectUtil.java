@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
-import java.io.PrintStream;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 

@@ -9,11 +9,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.util.InfoLogger;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,6 +34,8 @@ public class PlaySafe {
 	private String extraParams = "HTML5";
 	private String url = "https://hls.videocc.net/service/v1/token";
 	private String sign = "";
+	@Autowired
+	private InfoLogger infoLogger;
 
 
 	public static void main(String[] args)
@@ -92,6 +96,7 @@ public class PlaySafe {
 			entity = new UrlEncodedFormEntity(list);
 		} catch (Exception e) {
 			e.printStackTrace();
+			infoLogger.log(e.toString());
 		}
 
 

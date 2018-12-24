@@ -1,6 +1,8 @@
 package com.example.demo.util;
 
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -14,12 +16,16 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Description: HttpClient类包装以供使用
  * @Author: LJH
  */
 public class HttpClientUtil {
+	@Autowired
+	private InfoLogger infoLogger;
+
 	private static HttpClientUtil httpClient = null;
 
 
@@ -39,10 +45,15 @@ public class HttpClientUtil {
 	}
 
 
-	private HttpPost setPost(String url, JSONObject jsonObject)
-			throws Exception {
+	private HttpPost setPost(String url, JSONObject jsonObject){
 		HttpPost post = new HttpPost(url);
-		StringEntity entity = new StringEntity(jsonObject.toString());
+		StringEntity entity = null;
+		try {
+			entity = new StringEntity(jsonObject.toString());
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			infoLogger.log(e.toString());
+		}
 		post.setEntity(entity);
 		return post;
 	}
@@ -65,6 +76,7 @@ public class HttpClientUtil {
 			System.out.println("=================>" + token + "<=================");
 		} catch (Exception e) {
 			e.printStackTrace();
+			infoLogger.log(e.toString());
 		} finally {
 			try {
 				if (null != response) {
@@ -74,6 +86,7 @@ public class HttpClientUtil {
 					httpClient.close();
 				}
 			} catch (Exception e) {
+				infoLogger.log(e.toString());
 				e.printStackTrace();
 			}
 		}
@@ -98,6 +111,7 @@ public class HttpClientUtil {
 			return EntityUtils.toString(response.getEntity());
 		} catch (Exception e) {
 			e.printStackTrace();
+			infoLogger.log(e.toString());
 		} finally {
 			try {
 				if (null != response) {
@@ -107,6 +121,7 @@ public class HttpClientUtil {
 					client.close();
 				}
 			} catch (Exception e) {
+				infoLogger.log(e.toString());
 				e.printStackTrace();
 			}
 		}
@@ -132,19 +147,22 @@ public class HttpClientUtil {
 	}
 
 
-	public String getToken(String url, List list)
-			throws java.io.UnsupportedEncodingException {
+	public String getToken(String url, List list){
 		HttpEntity entity = null;
 		entity = new UrlEncodedFormEntity(list, org.apache.commons.codec.Charsets.UTF_8);
 		return doPost(setPost(url, entity));
 	}
 
 
-	private String getReponseContent(CloseableHttpResponse response)
-			throws Exception {
+	private String getReponseContent(CloseableHttpResponse response){
 		String readContent = null;
 		HttpEntity entity = response.getEntity();
-		readContent = EntityUtils.toString(entity);
+		try {
+			readContent = EntityUtils.toString(entity);
+		} catch (IOException e) {
+			e.printStackTrace();
+			infoLogger.log(e.toString());
+		}
 		System.out.println(readContent);
 		return readContent;
 	}

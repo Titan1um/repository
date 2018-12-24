@@ -15,8 +15,7 @@ public class CallbackController {
 	private CallBack callBack;
 
 	@GetMapping({"/Callback"})
-	public String callBack(HttpServletRequest req)
-			throws Exception {
+	public String callBack(HttpServletRequest req) {
 		this.callBack.save(req);
 		return null;
 	}
