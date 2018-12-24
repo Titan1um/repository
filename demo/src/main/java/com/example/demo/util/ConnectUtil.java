@@ -19,10 +19,13 @@ public class ConnectUtil {
 	@Value("${DB_PWD}")
 	private String password;
 
-	{
+	public ConnectUtil(){
 		try {
 			url =  "jdbc:mysql://"+host+"/"+dbName+"?useUnicode=true&characterEncoding=utf8";
 			Class.forName(driver);
+			//for test
+			System.out.println("connect failure:url="+url+"\nuser="+user+"\npassword="+password);
+			//for test
 			conn = DriverManager.getConnection(url, user, password);
 			if (!conn.isClosed()) {
 				System.out.println("Succeeded connecting to the Database!");
