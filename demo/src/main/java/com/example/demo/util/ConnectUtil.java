@@ -1,19 +1,27 @@
 package com.example.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class ConnectUtil {
-	private static Connection conn = null;
-	private static String url = "jdbc:mysql://localhost:3306/jun?useUnicode=true&characterEncoding=utf8";
-	private static String driver = "com.mysql.jdbc.Driver";
-	private static String user = "root";
-	private static String password = "root";
+	private Connection conn = null;
+	@Value("${DB_HOST}")
+	private String host;
+	@Value("${DB_DBNAME}")
+	private String dbName;
+	private String url;
+	private String driver = "com.mysql.jdbc.Driver";
+	@Value("${DB_USER}")
+	private String user;
+	@Value("${DB_PWD}")
+	private String password;
 
-	static {
+	{
 		try {
+			url =  "jdbc:mysql://"+host+"/"+dbName+"?useUnicode=true&characterEncoding=utf8";
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
 			if (!conn.isClosed()) {
@@ -25,10 +33,11 @@ public class ConnectUtil {
 	}
 
 
-	public static Connection getInstance()
+	public Connection getInstance()
 			throws Exception {
-		if ((null != conn) && (!conn.isClosed()))
+		if ((null != conn) && (!conn.isClosed())) {
 			return conn;
+		}
 		return null;
 	}
 

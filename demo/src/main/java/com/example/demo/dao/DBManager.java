@@ -2,7 +2,6 @@ package com.example.demo.dao;
 
 import com.example.demo.util.ConnectUtil;
 
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,6 +10,10 @@ import com.example.demo.util.InfoLogger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+* @Description:  其中三个saveXXX主要目前用作保存回调
+* @Author: LJH
+*/
 @org.springframework.stereotype.Component
 public class DBManager {
 	@Autowired
