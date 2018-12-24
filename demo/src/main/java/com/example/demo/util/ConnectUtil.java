@@ -2,6 +2,7 @@ package com.example.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,12 +20,19 @@ public class ConnectUtil {
 	@Value("${DB_PWD}")
 	private String password;
 
-	public ConnectUtil(){
+	@Autowired
+	private Environment env;
+
+	public ConnectUtil() {
 		try {
-			url =  "jdbc:mysql://"+host+"/"+dbName+"?useUnicode=true&characterEncoding=utf8";
+			host = env.getProperty("DB_HOST");
+			dbName = env.getProperty("DB_DBNAME");
+			user = env.getProperty("DB_USER");
+			password = env.getProperty("DB_PWD");
+			url = "jdbc:mysql://" + host + "/" + dbName + "?useUnicode=true&characterEncoding=utf8";
 			Class.forName(driver);
 			//for test
-			System.out.println("connect failure:url="+url+"\nuser="+user+"\npassword="+password);
+			System.out.println("connect failure:url=" + url + "\nuser=" + user + "\npassword=" + password);
 			//for test
 			conn = DriverManager.getConnection(url, user, password);
 			if (!conn.isClosed()) {
@@ -34,7 +42,6 @@ public class ConnectUtil {
 			e.printStackTrace();
 		}
 	}
-
 
 	public Connection getInstance()
 			throws Exception {

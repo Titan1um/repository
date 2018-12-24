@@ -40,7 +40,6 @@ public class TestConnectUtil {
 		System.out.println(host);
 		System.out.println(dbName);
 		System.out.println(url);
-		System.out.println(url);
 		System.out.println(user);
 		System.out.println(password);
 	}
@@ -60,7 +59,8 @@ public class TestConnectUtil {
 	@Test
 	public void testConnect() {
 		try {
-			url = "jdbc:mysql://" + host + "/" + dbName + "?useUnicode=true&characterE  ncoding=utf8";
+			url = "jdbc:mysql://" + host + "/" + dbName + "?useUnicode=true&characterEncoding=utf8";
+			System.out.println(url);
 			Class.forName(driver);
 			Connection conn = DriverManager.getConnection(url, user, password);
 			if (!conn.isClosed()) {
