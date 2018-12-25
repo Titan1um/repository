@@ -1,5 +1,6 @@
 package com.example.demo.utilTests;
 
+import com.example.demo.util.ConnectUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,7 +27,7 @@ public class TestConnectUtil {
 	private String host;
 	@Value("${DB_DBNAME}")
 	private String dbName;
-	private String url;
+	private String url="jdbc:mysql://" + host + "/" + dbName + "?useUnicode=true&characterEncoding=utf8";
 	private String driver = "com.mysql.jdbc.Driver";
 	@Value("${DB_USER}")
 	private String user;
@@ -33,6 +35,9 @@ public class TestConnectUtil {
 	private String password;
 
 	@Autowired
+	ConnectUtil connectUtil;
+
+	@Resource
 	private Environment env;
 
 	@Test
@@ -69,6 +74,16 @@ public class TestConnectUtil {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	@Test
+	public void testUtil(){
+		try {
+			connectUtil.getInstance();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

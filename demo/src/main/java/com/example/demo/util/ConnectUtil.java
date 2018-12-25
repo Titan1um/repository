@@ -3,27 +3,25 @@ package com.example.demo.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+@Component
 public class ConnectUtil {
 	private Connection conn = null;
-	@Value("${DB_HOST}")
-	private String host;
-	@Value("${DB_DBNAME}")
-	private String dbName;
+	private String host="127.0.0.1";
+	private String dbName="jun";
 	private String url;
 	private String driver = "com.mysql.jdbc.Driver";
-	@Value("${DB_USER}")
-	private String user;
-	@Value("${DB_PWD}")
-	private String password;
+	private String user="root";
+	private String password="root";
+	@Resource
+	Environment env;
 
-	@Autowired
-	private Environment env;
-
-	public ConnectUtil() {
+	public void Connect() {
 		try {
 			host = env.getProperty("DB_HOST");
 			dbName = env.getProperty("DB_DBNAME");
@@ -31,9 +29,6 @@ public class ConnectUtil {
 			password = env.getProperty("DB_PWD");
 			url = "jdbc:mysql://" + host + "/" + dbName + "?useUnicode=true&characterEncoding=utf8";
 			Class.forName(driver);
-			//for test
-			System.out.println("connect failure:url=" + url + "\nuser=" + user + "\npassword=" + password);
-			//for test
 			conn = DriverManager.getConnection(url, user, password);
 			if (!conn.isClosed()) {
 				System.out.println("Succeeded connecting to the Database!");
@@ -43,8 +38,8 @@ public class ConnectUtil {
 		}
 	}
 
-	public Connection getInstance()
-			throws Exception {
+	public Connection getInstance() throws Exception {
+		Connect();
 		if ((null != conn) && (!conn.isClosed())) {
 			return conn;
 		}

@@ -1,12 +1,9 @@
-package com.example.demo;
+package com.example.demo.properties;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-/**
- * @author lenovo
- */
 @Configuration
 @PropertySource("classpath:params.properties")
-public class PropertyConfiguration {
+public class PropertiesConfig {
 }

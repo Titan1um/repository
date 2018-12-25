@@ -52,6 +52,11 @@ public class CallBack {
 		String vid = req.getParameter("vid");
 		String plain = "upload" + vid + "qW4nvoVVi5";
 		plain = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
+
+		if(sign == null){
+			return "wrong encrypt";
+		}
+
 		if (sign.equals(plain)) {
 			return "upload";
 		}

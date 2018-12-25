@@ -18,13 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DBManager {
 	@Autowired
 	InfoLogger infoLogger;
+	@Autowired
+	ConnectUtil util;
 	Connection conn = null;
 
 	public void saveUpload(JSONObject jsonObject) {
 		String sql = "insert into upload(type,vid,t) values(?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = new ConnectUtil().getInstance();
+			this.conn = util.getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));
@@ -49,7 +51,7 @@ public class DBManager {
 		String sql = "insert into encode(type,vid,format,df,t) values(?,?,?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = new ConnectUtil().getInstance();
+			this.conn = util.getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));
@@ -74,7 +76,7 @@ public class DBManager {
 		String sql = "insert into establish(type,vid,t) values(?,?,current_date())";
 		PreparedStatement pst = null;
 		try {
-			this.conn = new ConnectUtil().getInstance();
+			this.conn = util.getInstance();
 			pst = this.conn.prepareStatement(sql);
 			pst.setString(1, jsonObject.getString("type"));
 			pst.setString(2, jsonObject.getString("vid"));
