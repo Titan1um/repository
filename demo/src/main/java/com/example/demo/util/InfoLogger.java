@@ -29,7 +29,7 @@ public class InfoLogger {
 		// 也可以这样打印日志C:/
 //		logger.log(Level.INFO, "Logger init success");
 		// 打印info级别的日志
-		logger.info("looger init success.");
+//		logger.info("logger init success.");
 		// 打印warning级别的日志
 //		logger.warning("测试warning日志");
 

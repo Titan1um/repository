@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music</title>
+</head>
+<body>
+<script src='//player.polyv.net/script/polyvplayer.min.js'></script>
+<div id='plv_7ca55a3c6f33c7950efa7d33dadf30e5_7'></div>
+<script th:inline="javascript">
+    var player = polyvObject('#plv_7ca55a3c6f33c7950efa7d33dadf30e5_7').videoPlayer({
+        'width':'600',
+        'height':'339',
+        'vid' : '7ca55a3c6f33c7950efa7d33dadf30e5_7' ,
+        'forceH5':true ,
+        'playsafe':[[${token}]]
+        //取值参考文档：http://dev.polyv.net/?p=7377
+    });
+</script>
+</body>
+</html>

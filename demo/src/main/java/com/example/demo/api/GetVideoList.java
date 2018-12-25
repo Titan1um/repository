@@ -1,12 +1,12 @@
-package com.example.demo.util;
+package com.example.demo.api;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import com.example.demo.util.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -44,7 +44,11 @@ public class GetVideoList {
 		}
 	}
 
-
+	/**
+	* @Description:  获取所有视频
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	public String getVideoList() {
 		return getVideoListInGet();
 	}
@@ -161,6 +165,11 @@ public class GetVideoList {
 		}
 	}
 
+	/**
+	* @Description:  获取所有已经就绪的视频
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	public String getAllReadyVideo() {
 		String string = getVideoList();
 		JSONObject jsonObject = new JSONObject(string);

@@ -45,7 +45,7 @@ public class HttpClientUtil {
 	}
 
 
-	private HttpPost setPost(String url, JSONObject jsonObject){
+	private HttpPost setPost(String url, JSONObject jsonObject) {
 		HttpPost post = new HttpPost(url);
 		StringEntity entity = null;
 		try {
@@ -68,12 +68,8 @@ public class HttpClientUtil {
 			httpClient = HttpClients.createDefault();
 
 			response = httpClient.execute(httpPost);
-			System.out.println("Http请求状态码：{}" + response.getStatusLine().getStatusCode());
-
-			System.out.println("httppost:" + EntityUtils.toString(httpPost.getEntity()) + "\n==============================================");
 
 			token = getReponseContent(response);
-			System.out.println("=================>" + token + "<=================");
 		} catch (Exception e) {
 			e.printStackTrace();
 			infoLogger.log(e.toString());
@@ -147,14 +143,14 @@ public class HttpClientUtil {
 	}
 
 
-	public String getToken(String url, List list){
+	public String getToken(String url, List list) {
 		HttpEntity entity = null;
 		entity = new UrlEncodedFormEntity(list, org.apache.commons.codec.Charsets.UTF_8);
 		return doPost(setPost(url, entity));
 	}
 
 
-	private String getReponseContent(CloseableHttpResponse response){
+	private String getReponseContent(CloseableHttpResponse response) {
 		String readContent = null;
 		HttpEntity entity = response.getEntity();
 		try {
