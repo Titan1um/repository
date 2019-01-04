@@ -15,23 +15,22 @@ public class PlaySafeController {
 
 	@GetMapping({"/playSafe"})
 	public String playSafeController(Model model, HttpServletRequest req) {
+		//设定观看视频对应vid，可由req传入
 		this.playSafe.setVideoId("7ca55a3c6f84422e3c852a2bf5de56ca_7");
+		//设定请求ts
+		this.playSafe.setTs(String.valueOf(System.currentTimeMillis()));
+		//设定请求者的ip
 		this.playSafe.setViewerIp(req.getRemoteAddr());
+
+		//请求token，交付model
 		model.addAttribute("token", this.playSafe.getToken());
-		model.addAttribute("sign", this.playSafe.getSign());
+		model.addAttribute("sign", this.playSafe.getSignForMobile());
 		model.addAttribute("ts", this.playSafe.getTs());
+
 		return "playSafe";
 	}
 
-	@GetMapping({"/music"})
-	public String musicController(Model model, HttpServletRequest req) {
-		this.playSafe.setVideoId("7ca55a3c6f33c7950efa7d33dadf30e5_7");
-		this.playSafe.setViewerIp(req.getRemoteAddr());
-		model.addAttribute("token", this.playSafe.getToken());
-		model.addAttribute("sign", this.playSafe.getSign());
-		model.addAttribute("ts", this.playSafe.getTs());
-		return "music";
-	}
+
 
 }
 

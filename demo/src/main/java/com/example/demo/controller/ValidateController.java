@@ -38,8 +38,9 @@ public class ValidateController {
 		String reString = null;
 		if (null == prefix) {
 			reString = jsonpObject.toString();
-		} else
+		} else {
 			reString = prefix + "(" + jsonpObject.toString() + ")";
+		}
 		System.out.println(reString);
 
 

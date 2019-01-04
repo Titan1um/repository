@@ -23,6 +23,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PlaySafe {
+	/**
+	 * @TODO: 前端页面带参(vid,PCorMOBILE)访问playSafe接口,接口返回所需类型
+	 *          PC {playsafe:}  Mobile {ts: ,sign:}
+	 */
 	private String userId = "7ca55a3c6f";
 	private String secretKey = "qW4nvoVVi5";
 	private String videoId = "7ca55a3c6f84422e3c852a2bf5de56ca_7";
@@ -74,12 +78,21 @@ public class PlaySafe {
 
 
 	public String getSignForMobile() {
+		if (null == this.ts) {
+			this.ts = String.valueOf(System.currentTimeMillis());
+		}
 		String plain = this.secretKey + this.videoId + this.ts;
 		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
 		return this.sign;
 	}
 
 
+	/**
+	* @Description:  处理请求参数到entity中
+	 *                  并返回一个entity
+	* @Param: [sign]
+	* @return: org.apache.http.HttpEntity
+	*/
 	private HttpEntity getData(String sign) {
 		List list = new ArrayList();
 		list.add(new BasicNameValuePair("userId", this.userId));
@@ -111,7 +124,10 @@ public class PlaySafe {
 	}
 
 	public String getTs() {
-		return String.valueOf(this.ts);
+		if(null == this.ts) {
+			this.ts = String.valueOf(System.currentTimeMillis());
+		}
+		return this.ts;
 	}
 
 

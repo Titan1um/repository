@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,9 +13,9 @@
         'height':'338',
         'vid' : '7ca55a3c6f84422e3c852a2bf5de56ca_7' ,
         'forceH5':true ,
-        'playsafe':[[${token}]]
-        //'sign':[[${sign}]],
-        //'ts':[[${ts}]]
+        'playsafe':[[${token}]],
+        'sign':[[${sign}]],
+        'ts':[[${ts}]]
         //取值参考文档：http://dev.polyv.net/?p=7377
     });
 </script>

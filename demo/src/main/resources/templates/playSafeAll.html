@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title></title>
+    <script type="text/ecmascript" src="md5.js"></script>
+</head>
+<style>
+    body{
+        margin:0;
+        padding:0;
+    }
+    #test{
+        max-width:900px;
+    }
+
+</style>
+<body>
+<script src="https://libs.baidu.com/jquery/1.11.1/jquery.js"></script>
+<script src='//player.polyv.net/script/polyvplayer.min.js'></script>
+<div id="test">
+    <div id='player'></div>
+</div>
+<script th:inline="javascript">
+    var width = document.getElementById("test").scrollWidth;
+    var height = width*0.5625; // 16/9 = 0.5625;
+    var player = polyvObject('#player').videoPlayer({
+        'width':width,
+        'height':height,
+        'vid' : "efbb4ae8ac5724feb54c426584f2b704_e",
+        'forceH5':true,
+        'session_id':'XYP',
+        'flashvars':{'param2':'flash'},//flash
+        'params':{'param2':'HTML5'},//H5
+        'playsafe':[[${token}]],
+        'ts':[[${ts}]],
+        'sign':[[${token}]],
+    });
+
+    function getToken(vid){
+        var signinfo;
+        jQuery.ajax({
+            type: "get",
+            async : false,
+            dataType: "json",
+            url: "getToken?vid="+vid,
+            success: function(data){
+                signinfo = data;
+            }
+        });
+        return signinfo;
+    }
+
+
+    function nextVideo(vid){
+        var json = getToken(vid);
+        var ts = json.ts;
+        var sign = json.sign;
+        var token = json.token;
+        const option = {
+            vid: vid,
+            autoplay: true,
+            ts: ts,
+            sign: sign,
+            playsafe: token,
+            //statistics: {}  // 和选项中statistics一样，会覆盖掉原本的统计参数
+        };
+
+
+        player.changeVid(JSON.stringify(option));
+    }
+
+</script>
+<button class='btn' onclick="nextVideo('efbb4ae8ac1017127523fbc6257f0582_e');" >视频1</button><br> <br>
+<button class='btn' onclick="nextVideo('efbb4ae8ac17937eb96676a3a328a0cb_e');" >视频2</button><br> <br>
+<button class='btn' onclick="nextVideo('efbb4ae8ac03ca7a9bce3b22deae4aa7_e');" >视频3</button><br> <br>
+
+</body>
+</html>

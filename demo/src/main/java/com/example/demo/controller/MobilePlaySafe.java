@@ -16,9 +16,9 @@ public class MobilePlaySafe {
 	public String mobile(Model model) {
 		String ts = String.valueOf(System.currentTimeMillis());
 		this.playSafe.setTs(ts);
-		model.addAttribute("ts", ts);
+		this.playSafe.setVideoId("7ca55a3c6fde1f2833c9d6d235395020_7");
+		model.addAttribute("ts", this.playSafe.getTs());
 		model.addAttribute("sign", this.playSafe.getSignForMobile());
-
 		return "mobile";
 	}
 }
