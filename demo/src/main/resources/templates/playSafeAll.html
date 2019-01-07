@@ -28,17 +28,18 @@
     var player = polyvObject('#player').videoPlayer({
         'width':width,
         'height':height,
-        'vid' : "efbb4ae8ac5724feb54c426584f2b704_e",
+        'vid' : "7ca55a3c6f84422e3c852a2bf5de56ca_7",
         'forceH5':true,
         'session_id':'XYP',
         'flashvars':{'param2':'flash'},//flash
         'params':{'param2':'HTML5'},//H5
         'playsafe':[[${token}]],
         'ts':[[${ts}]],
-        'sign':[[${token}]],
+        'sign':[[${sign}]],
     });
 
     function getToken(vid){
+        //向服务器/getToken发起请求获取token返回
         var signinfo;
         jQuery.ajax({
             type: "get",
@@ -52,8 +53,8 @@
         return signinfo;
     }
 
-
     function nextVideo(vid){
+        //取得token等并调用player.changeVideo方法
         var json = getToken(vid);
         var ts = json.ts;
         var sign = json.sign;
@@ -66,15 +67,13 @@
             playsafe: token,
             //statistics: {}  // 和选项中statistics一样，会覆盖掉原本的统计参数
         };
-
-
         player.changeVid(JSON.stringify(option));
     }
 
 </script>
-<button class='btn' onclick="nextVideo('efbb4ae8ac1017127523fbc6257f0582_e');" >视频1</button><br> <br>
-<button class='btn' onclick="nextVideo('efbb4ae8ac17937eb96676a3a328a0cb_e');" >视频2</button><br> <br>
-<button class='btn' onclick="nextVideo('efbb4ae8ac03ca7a9bce3b22deae4aa7_e');" >视频3</button><br> <br>
+<button class='btn' onclick="nextVideo('7ca55a3c6fde1f2833c9d6d235395020_7');" >视频1</button><br> <br>
+<button class='btn' onclick="nextVideo('7ca55a3c6f33c7950efa7d33dadf30e5_7');" >视频2</button><br> <br>
+<button class='btn' onclick="nextVideo('7ca55a3c6f4d26ec4cf90d324a31c24a_7');" >视频3</button><br> <br>
 
 </body>
 </html>

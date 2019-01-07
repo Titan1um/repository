@@ -19,6 +19,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Description: 提供playsafe生成功能的service
+ *              使用PlaySafe工具前需设置sercretKey
+ * 	            使用PlaySafe工具时需设置vid ts viewerIp
+ *
+ * 	            主要函数为getToken() getSignForMobile()
  * @Author: LJH
  */
 @Component
@@ -31,32 +35,49 @@ public class PlaySafe {
 	private String secretKey = "qW4nvoVVi5";
 	private String videoId = "7ca55a3c6f84422e3c852a2bf5de56ca_7";
 	private String ts = null;
+	/**
+	 * viewerIP 若开发者不想设置,应用一默认值代替
+	 */
 	private String viewerIp = "";
 	private String viewerId = "12345";
 	private String viewerName = "testUser";
 	private String extraParams = "HTML5";
 	private String url = "https://hls.videocc.net/service/v1/token";
 	private String sign = "";
+	/**
+	 * InfoLogger 若不使用则删除声明和在异常中的使用
+	 */
 	@Autowired
 	private InfoLogger infoLogger;
 
 
 	public static void main(String[] args)
 			throws UnknownHostException {
+		//测试
+		//使用PlaySafe工具前需设置sercretKey
+		//使用PlaySafe工具时需设置vid ts viewerIp
 		PlaySafe playSafe = new PlaySafe();
 		String address = InetAddress.getLocalHost().getHostAddress().toString();
 		playSafe.setViewerIp(address);
+		playSafe.setTs(String.valueOf(System.currentTimeMillis()));
+		playSafe.setVideoId("7ca55a3c6f84422e3c852a2bf5de56ca_7");
 		System.out.println("token:" + playSafe.getToken());
 	}
 
-
+	/**
+	* @Description:  获取token的入口
+	* @Author: LJH
+	*/
 	public String getToken() {
+		//生成sign
 		String sign = getSign();
-
+		//将用户信息包装为entity
 		HttpEntity entity = getData(sign);
-
+		//http请求工具类
 		HttpClientUtil client = HttpClientUtil.getInstance();
+		//HttpClientUtil.getToken 以post方式将entity发送到指定url
 		String token = client.getToken(this.url, entity);
+
 		JSONObject json = new JSONObject(token);
 		json = (JSONObject) json.get("data");
 		token = json.getString("token");
@@ -64,7 +85,12 @@ public class PlaySafe {
 	}
 
 
-	public String getSign() {
+	/**
+	* @Description:  返回PC端播放token请求所需的Sign
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
+	private String getSign() {
 		if (null == this.ts) {
 			this.ts = String.valueOf(System.currentTimeMillis());
 		}
@@ -76,7 +102,11 @@ public class PlaySafe {
 		return this.sign;
 	}
 
-
+	/**
+	* @Description:  返回手机端观看时需要的sign
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	public String getSignForMobile() {
 		if (null == this.ts) {
 			this.ts = String.valueOf(System.currentTimeMillis());
@@ -115,6 +145,7 @@ public class PlaySafe {
 		return entity;
 	}
 
+	//下均为getter setter
 
 	public void setViewerIp(String ip) {
 		this.viewerIp = ip;

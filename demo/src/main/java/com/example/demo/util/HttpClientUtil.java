@@ -1,12 +1,10 @@
 package com.example.demo.util;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -20,9 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @Description: HttpClient类包装以供使用
+ *               直接使用doPost doGet getToken即可
+ *               InfoLogger 若不使用则删除声明和在异常中的使用
  * @Author: LJH
  */
 public class HttpClientUtil {
+	/**
+	* @Description: InfoLogger 若不使用则删除声明和在异常中的使用
+	* @Param:
+	* @return:
+	* @Author: LJH
+	*/
 	@Autowired
 	private InfoLogger infoLogger;
 
@@ -45,7 +51,7 @@ public class HttpClientUtil {
 	}
 
 
-	private HttpPost setPost(String url, JSONObject jsonObject) {
+	public HttpPost setPost(String url, JSONObject jsonObject) {
 		HttpPost post = new HttpPost(url);
 		StringEntity entity = null;
 		try {
@@ -59,7 +65,7 @@ public class HttpClientUtil {
 	}
 
 
-	private String doPost(HttpPost httpPost) {
+	public String doPost(HttpPost httpPost) {
 		CloseableHttpClient httpClient = null;
 		CloseableHttpResponse response = null;
 		String token = null;
@@ -87,12 +93,10 @@ public class HttpClientUtil {
 			}
 		}
 
-
 		return token;
 	}
 
-
-	public HttpGet setGet(String url) {
+	private HttpGet setGet(String url) {
 		HttpGet httpGet = new HttpGet(url);
 		return httpGet;
 	}
@@ -132,6 +136,12 @@ public class HttpClientUtil {
 	}
 
 
+	/**
+	 * @Description: post方式将entity发送到指定url
+	 * @Param: [url, entity]
+	 * @return: java.lang.String
+	 * @Author: LJH
+	 */
 	public String getToken(String url, HttpEntity entity) {
 		return doPost(setPost(url, entity));
 	}
