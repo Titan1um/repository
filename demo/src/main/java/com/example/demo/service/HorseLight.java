@@ -8,7 +8,10 @@ import java.nio.charset.Charset;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * @Description: 此处用了重写过的JsonObject，用LinkedHashMap代替了HashMap以保证返回参数的顺序(方便调试查看，可不使用)，不使用则改声明中的JSonObject为org的json即可
+ * @Author: LJH
+ */
 @Component
 public class HorseLight {
 	private String vid = null;
@@ -38,16 +41,12 @@ public class HorseLight {
 	private String strength = "4";
 	private String show = "on";
 
-
-	public String getSign() {
-		String plain = "vid=" + this.vid + "&secretkey=" + this.secretKey + "&username=" + this.username + "&code=" + this.code + "&status=" + this.status + "&t=" + this.t;
-
-
-		System.out.println(plain);
-		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
-		return this.sign;
-	}
-
+	/**
+	 * @Description: HorseLight主入口
+	 * 计算sign，并把参数都包装如jsonObject，返回
+	 * @return: com.example.demo.util.JSonObject
+	 * @Author: LJH
+	 */
 	public JSonObject getJson() {
 		getSign();
 		JSonObject object = new JSonObject();
@@ -73,7 +72,45 @@ public class HorseLight {
 		return object;
 	}
 
+	public JSonObject getJsonForValidateOnly() {
+		getSignForValidateOnly();
+		JSonObject object = new JSonObject();
+		//status可判断用户是否为合法用户后再返回
+		object.put("status", 1);
+		object.put("username", this.username);
+		object.put("sign", this.sign);
+		return object;
+	}
 
+	/**
+	 * @Description: 拼接计算并返回授权sign
+	 * @return: java.lang.String
+	 * @Author: LJH
+	 */
+	public String getSignForValidateOnly() {
+		String plain = "vid=" + vid + "&secretkey=" + secretKey + "&username=" + username + "&code=" + code + "&status=" + status + "&t=" + t;
+		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
+		return sign;
+	}
+
+	/**
+	 * @Description: 拼接计算并返回跑马灯sign
+	 * @return: java.lang.String
+	 * @Author: LJH
+	 */
+	public String getSign() {
+		String plain = "vid=" + this.vid + "&secretkey=" + this.secretKey + "&username=" + this.username + "&code=" + this.code + "&status=" + this.status + "&t=" + this.t;
+
+		System.out.println(plain);
+		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
+		return this.sign;
+	}
+
+	/**
+	 * @Description: 用main做测试类，在此手动填入参数，测试正确的返回sign
+	 * @return: void
+	 * @Author: LJH
+	 */
 	public static void main(String[] args) {
 		HorseLight horseLight = new HorseLight();
 		horseLight.setT("143020010115550947");
