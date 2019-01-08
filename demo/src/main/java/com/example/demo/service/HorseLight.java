@@ -1,15 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.util.JSonObject;
-
-import java.io.PrintStream;
 import java.nio.charset.Charset;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 /**
- * @Description: 此处用了重写过的JsonObject，用LinkedHashMap代替了HashMap以保证返回参数的顺序(方便调试查看，可不使用)，不使用则改声明中的JSonObject为org的json即可
+ * @Description: 此处用了重写过的JsonObject，用LinkedHashMap代替了HashMap以保证返回参数的顺序(方便调试查看，不推荐使用)，
+ *                  不使用则改声明中的JSonObject为org的json即可
  * @Author: LJH
  */
 @Component
@@ -24,7 +22,6 @@ public class HorseLight {
 
 	private String sign = null;
 	private String msg = "Errormessage!";
-
 	private String fontSize = "40";
 	private String fontColor = "0xFFE900";
 	private String speed = "200";
@@ -72,6 +69,11 @@ public class HorseLight {
 		return object;
 	}
 
+	/**
+	* @Description: 授权入口
+	* @return: com.example.demo.util.JSonObject
+	* @Author: LJH
+	*/
 	public JSonObject getJsonForValidateOnly() {
 		getSignForValidateOnly();
 		JSonObject object = new JSonObject();

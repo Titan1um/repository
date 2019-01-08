@@ -42,7 +42,7 @@ public class InfoLogger {
 	//test
 	public static void main(String[] args) {
 		try {
-			new InfoLogger().log("hi,mtfk");
+			new InfoLogger().log("hi,dude");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

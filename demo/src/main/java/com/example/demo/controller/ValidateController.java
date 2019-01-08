@@ -19,7 +19,7 @@ public class ValidateController {
 
 	/**
 	 * @Description: 跑马灯授权返回示例
-	 * 此处的requestMapping URL是为了统一php服务器与java服务器
+	 * 此处的requestMapping URL是为了统一php服务与其他服务，用户应自定
 	 * 若不想用RestController可用@ResponseBody
 	 * @Param: [req, rsp]
 	 * @return: java.lang.String
@@ -35,7 +35,7 @@ public class ValidateController {
 //		rsp.addHeader("Vary", "Accept-Encoding");
 //		rsp.addHeader("Transfer-Encoding", "chunked");
 
-		//接受req参数并设置,亦可在HorseLight中新建接收req再初始化减少controller操作和可读
+		//接受req参数并设置
 		this.horseLight.setVid(req.getParameter("vid"));
 		this.horseLight.setCode(req.getParameter("code"));
 		this.horseLight.setT(req.getParameter("t"));
@@ -59,7 +59,7 @@ public class ValidateController {
 
 	/**
 	 * @Description: 播放授权验证返回示例
-	 * 此处的requestMapping URL是为了统一php服务器与java服务器
+	 * 此处的requestMapping URL是为了统一php服务与其他服务，用户应自定
 	 * 若不想用RestController可用@ResponseBody
 	 * @Param: [req, rsp]
 	 * @return: java.lang.String
@@ -75,7 +75,7 @@ public class ValidateController {
 //		rsp.addHeader("Vary", "Accept-Encoding");
 //		rsp.addHeader("Transfer-Encoding", "chunked");
 
-		//接受req参数并设置,亦可在HorseLight中新建接收req再初始化减少controller操作和可读
+		//接受req参数并设置
 		this.horseLight.setVid(req.getParameter("vid"));
 		this.horseLight.setCode(req.getParameter("code"));
 		this.horseLight.setT(req.getParameter("t"));
