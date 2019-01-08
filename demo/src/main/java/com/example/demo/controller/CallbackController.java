@@ -20,12 +20,24 @@ public class CallbackController {
 	@Autowired
 	InfoLogger infoLogger;
 
+	/**
+	* @Description: CallBackController
+	* @Param: [req]
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	@GetMapping({"/Callback"})
 	public String callBack(HttpServletRequest req) {
 		this.callBack.save(req);
 		return null;
 	}
 
+	/**
+	* @Description:  用此url测试ConnectUtil能否连接db成功
+	* @Param: [req]
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	@GetMapping({"/CallbackTest"})
 	public String CallBackTest(HttpServletRequest req) {
 		try {
@@ -33,8 +45,9 @@ public class CallbackController {
 		} catch (Exception e) {
 			infoLogger.log(e.toString());
 			e.printStackTrace();
+			return "error occurs";
 		}
-		return null;
+		return "ojbk";
 	}
 
 }

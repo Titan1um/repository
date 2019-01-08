@@ -6,6 +6,10 @@ import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+* @Description:  连接数据库,目前读默认springboot的application.properties
+* @Author: LJH
+*/
 @Component
 public class ConnectUtil {
 	private Connection conn = null;

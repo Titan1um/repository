@@ -21,6 +21,12 @@ public class CallBack {
 	@Autowired
 	private DBManager dbManager;
 
+	/**
+	* @Description:  处理回调入口,主要逻辑:判断req.sign的回调类型,打包req参数,调用DBManager.save()
+	* @Param: [req]
+	* @return: void
+	* @Author: LJH
+	*/
 	public void save(HttpServletRequest req){
 		String opt = cmpSign(req);
 		try {
@@ -47,6 +53,12 @@ public class CallBack {
 
 	}
 
+	/**
+	* @Description:  判断sign是何种回调
+	* @Param: [req]
+	* @return: java.lang.String
+	* @Author: LJH
+	*/
 	private String cmpSign(HttpServletRequest req) {
 		String sign = req.getParameter("sign");
 		String vid = req.getParameter("vid");
@@ -57,10 +69,12 @@ public class CallBack {
 			return "wrong encrypt";
 		}
 
+		//是否符合上传拼接方式
 		if (sign.equals(plain)) {
 			return "upload";
 		}
 
+		//是否符合审核拼接方式
 		String type = req.getParameter("type");
 		plain = "manage" + type + vid + "qW4nvoVVi5";
 		plain = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
@@ -68,6 +82,7 @@ public class CallBack {
 			return "check";
 		}
 
+		//是否符合编码拼接方式
 		String df = req.getParameter("df");
 		String format = req.getParameter("format");
 		plain = "encode" + format + vid + df + "qW4nvoVVi5";
@@ -83,6 +98,12 @@ public class CallBack {
 		return "wrong encrypt";
 	}
 
+	/**
+	* @Description:  将req参数放入jsonObject
+	* @Param: [req]
+	* @return: org.json.JSONObject
+	* @Author: LJH
+	*/
 	private JSONObject saveUpload(HttpServletRequest req) throws Exception {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("type", req.getParameter("type"));
@@ -91,6 +112,12 @@ public class CallBack {
 		return jsonObject;
 	}
 
+	/**
+	* @Description: 将req参数放入jsonObject
+	* @Param: [req]
+	* @return: org.json.JSONObject
+	* @Author: LJH
+	*/
 	private JSONObject saveEncode(HttpServletRequest req) throws Exception {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("format", req.getParameter("format"));
@@ -101,18 +128,17 @@ public class CallBack {
 		return jsonObject;
 	}
 
+	/**
+	* @Description: 将req参数放入jsonObject
+	* @Param: [req]
+	* @return: org.json.JSONObject
+	* @Author: LJH
+	*/
 	private JSONObject saveCheck(HttpServletRequest req) throws Exception {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("vid", req.getParameter("vid"));
 		jsonObject.put("type", req.getParameter("type"));
 
 		return jsonObject;
-	}
-
-	public static void main(String[] args) {
-		String vid = "7ca55a3c6ff4287723fe8561f452aba2_7";
-		String plain = "upload" + vid + "qW4nvoVVi5";
-		plain = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
-		System.out.println(plain);
 	}
 }

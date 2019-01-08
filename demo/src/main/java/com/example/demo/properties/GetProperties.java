@@ -1,8 +1,5 @@
 package com.example.demo.properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +16,11 @@ public class GetProperties {
 
 	public String[] getProperty(){
 		System.out.println(env.getProperty("msg"));
+		System.out.println(env.getProperty("exist"));
 		return null;
+	}
+
+	public Environment getEnv(){
+		return env;
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
 * @Description:  其中三个saveXXX主要目前用作保存回调
+ * 接受jsonObject并解析参数,最后pst,exec,保存到数据库
 * @Author: LJH
 */
 @org.springframework.stereotype.Component

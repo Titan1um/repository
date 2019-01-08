@@ -32,5 +32,7 @@ public class TestDBManager {
 
 		Assert.assertNotNull(env.getProperty("msg"));
 		Assert.assertEquals(env.getProperty("msg"), "test");
+		Assert.assertEquals(env.getProperty("exist"), "true");
+		System.out.println(env.getProperty("exist"));
 	}
 }
