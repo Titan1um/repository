@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 /**
 * @Description:  两种验证方式secretkey不同，故有两个init版本
+ * 在第103行填入自定义授权secrekey
+ * 在第127行填入外部授权secretkey,或搜索
 * @Author: LJH
 */
 @Component

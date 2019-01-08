@@ -20,7 +20,7 @@ import com.example.demo.service.LiveValidator;
 public class LiveValidateController {
 
 	/**
-	* @Description:
+	* @Description: 自定义授权
 	* @Param: [req]
 	* @return: java.lang.String
 	* @Author: LJH
@@ -28,12 +28,12 @@ public class LiveValidateController {
 	@GetMapping(value = "/selfDefine")
 	@ResponseBody
 	public String selfDefine(HttpServletRequest req) {
-		System.out.println("sd");
+		System.out.println("selfDefine");
 		return new LiveValidator().getSDCallBack(req);
 	}
 
 	/**
-	* @Description:
+	* @Description: 外部授权
 	* @Param: [req]
 	* @return: java.lang.String
 	* @Author: LJH
@@ -41,12 +41,12 @@ public class LiveValidateController {
 	@GetMapping(value = "/outerValidate",produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String outerValidate(HttpServletRequest req) {
-		System.out.println("ov");
+		System.out.println("outerValidate");
 		return new LiveValidator().getOVCallBack(req);
 	}
 
 	/**
-	* @Description:
+	* @Description: 客户接入案例
 	* @Param: [req, resp]
 	* @return: java.lang.String
 	* @Author: LJH
