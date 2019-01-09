@@ -23,15 +23,16 @@ public class LiveHorseLight {
 
 
 	private String sign = null;
-	private String msg = "Errormessage!";
+	//	private String msg = "Errormessage!";
+	private String msg = "Hello!";
 	private String fontSize = "40";
-	private String fontColor = "0xFFE900";
+	private String fontColor = "0x000000";
 	private String speed = "200";
-	private String filter = "on";
-	private String setting = "3";
+	private String filter = "off";
+	private String setting = "1";
 	private String alpha = "1";
 	private String filterAlpha = "1";
-	private String filterColor = "0x3914AF";
+	private String filterColor = "0x000000";
 	private String blurX = "2";
 	private String blurY = "2";
 	private String tweenTime = "1";
@@ -75,6 +76,7 @@ public class LiveHorseLight {
 	public JSonObject getJson() {
 		getSign();
 		JSonObject object = new JSonObject();
+		object.put("show", this.show);
 		object.put("username", this.username);
 		object.put("sign", this.sign);
 		object.put("msg", this.msg);
@@ -92,7 +94,6 @@ public class LiveHorseLight {
 		object.put("lifeTime", this.lifeTime);
 		object.put("tweenTime", this.tweenTime);
 		object.put("strength", this.strength);
-		object.put("show", this.show);
 		return object;
 	}
 
