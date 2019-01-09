@@ -88,9 +88,9 @@ public class LiveHorseLight {
 		object.put("filterColor", this.filterColor);
 		object.put("blurX", this.blurX);
 		object.put("blurY", this.blurY);
-		object.put("tweenTime", this.tweenTime);
 		object.put("interval", this.interval);
 		object.put("lifeTime", this.lifeTime);
+		object.put("tweenTime", this.tweenTime);
 		object.put("strength", this.strength);
 		object.put("show", this.show);
 		return object;
