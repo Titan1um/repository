@@ -24,19 +24,19 @@ public class LiveHorseLight {
 
 	private String sign = null;
 	private String msg = "error";
-	private String fontSize = "40";
-	private String fontColor = "0x000000";
-	private String speed = "200";
-	private String filter = "off";
+	private String fontSize = "12";
+	private String fontColor = "0xffffff";
+	private String speed = "1500";
+	private String filter = "on";
 	private String setting = "1";
-	private String alpha = "1";
+	private String alpha = "0.5";
 	private String filterAlpha = "1";
-	private String filterColor = "0x000000";
+	private String filterColor = "0xffffff";
 	private String blurX = "2";
 	private String blurY = "2";
 	private String tweenTime = "1";
-	private String interval = "5";
-	private String lifeTime = "3";
+	private String interval = "3";
+	private String lifeTime = "60";
 	private String strength = "4";
 	private String show = "on";
 
@@ -51,12 +51,12 @@ public class LiveHorseLight {
 		setT(req.getParameter("t"));
 		setUid(req.getParameter("uid"));
 		String prefix = req.getParameter("callback");
-		setUsername("N");
+		setUsername("Neon Ninja");
 		//getJson
 		JSonObject jsonpObject = getJson();
 		//若有则处理jsonp
 		String reString = null;
-		if (null == prefix) {
+		if (null == prefix||prefix.equals("")) {
 			reString = jsonpObject.toString();
 		} else {
 			reString = prefix + "(" + jsonpObject.toString() + ")";
@@ -76,8 +76,8 @@ public class LiveHorseLight {
 		getSign();
 		JSonObject object = new JSonObject();
 		object.put("show", this.show);
-		object.put("username", this.username);
 		object.put("sign", this.sign);
+		object.put("username", this.username);
 		object.put("msg", this.msg);
 		object.put("fontSize", this.fontSize);
 		object.put("fontColor", this.fontColor);
