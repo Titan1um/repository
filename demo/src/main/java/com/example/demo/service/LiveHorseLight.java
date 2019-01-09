@@ -52,7 +52,7 @@ public class LiveHorseLight {
 		setT(req.getParameter("t"));
 		setUid(req.getParameter("uid"));
 		String prefix = req.getParameter("callback");
-		setUsername("Ti");
+		setUsername("N");
 		//getJson
 		JSonObject jsonpObject = getJson();
 		//若有则处理jsonp
