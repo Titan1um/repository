@@ -44,7 +44,7 @@ public class DBManager {
 				infoLogger.log(e.toString());
 			}
 		}
-
+		infoLogger.log(jsonObject.toString());
 		System.out.println("Saved upload.");
 	}
 
@@ -70,6 +70,7 @@ public class DBManager {
 				infoLogger.log(e.toString());
 			}
 		}
+		infoLogger.log(jsonObject.toString());
 		System.out.println("Saved Encode.");
 	}
 
@@ -93,6 +94,7 @@ public class DBManager {
 				infoLogger.log(e.toString());
 			}
 		}
+		infoLogger.log(jsonObject.toString());
 		System.out.println("Saved check.");
 	}
 
