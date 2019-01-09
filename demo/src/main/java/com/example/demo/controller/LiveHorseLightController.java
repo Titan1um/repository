@@ -15,7 +15,7 @@ public class LiveHorseLightController {
 	@Autowired
 	LiveHorseLight liveHorseLight;
 
-	@@GetMapping("/lijunhong/livehorselight")
+	@GetMapping("/lijunhong/livehorselight")
 	public String LiveHorseLight(HttpServletRequest req, HttpServletResponse rsp) {
 		return liveHorseLight.getJsonString(req);
 	}

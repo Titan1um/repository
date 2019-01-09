@@ -60,8 +60,10 @@ public class CallBack {
 	* @Author: LJH
 	*/
 	private String cmpSign(HttpServletRequest req) {
+		//获取参数
 		String sign = req.getParameter("sign");
 		String vid = req.getParameter("vid");
+		//upload vid secretKey 拼接并Mde
 		String plain = "upload" + vid + "qW4nvoVVi5";
 		plain = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
 
