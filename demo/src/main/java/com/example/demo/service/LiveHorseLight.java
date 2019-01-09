@@ -23,8 +23,7 @@ public class LiveHorseLight {
 
 
 	private String sign = null;
-	//	private String msg = "Errormessage!";
-	private String msg = "Hello!";
+	private String msg = "error";
 	private String fontSize = "40";
 	private String fontColor = "0x000000";
 	private String speed = "200";
