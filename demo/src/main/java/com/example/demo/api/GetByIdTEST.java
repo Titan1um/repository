@@ -27,6 +27,9 @@ public class GetByIdTEST {
 	 */
 	private String readtoken = "66d670ea-c227-42dd-ac99-dd7dad85d23f";
 	private String vid = "7ca55a3c6fb1f445d9ab845be127b10b_7";
+	/**
+	* @Description:  存在则使用默认值
+	*/
 	private boolean useDefaultValue = true;
 
 	/**

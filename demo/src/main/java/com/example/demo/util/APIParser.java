@@ -1,5 +1,8 @@
 package com.example.demo.util;
 
+import com.example.demo.api.MethodStatus;
+import com.example.demo.api.ParamStatus;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -24,30 +27,43 @@ public class APIParser {
 	private String secretKey = "";
 	private List<String> params = new LinkedList<>();
 	private List<String> methods = new LinkedList<>();
+	private ParamStatus paramStatus = new ParamStatus();
+	private MethodStatus methodStatus = new MethodStatus();
 
 	public static void main(String[] args) {
-		try {
-			new APIParser().Parse();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			new APIParser().Parse();
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
-	 * @Description: 2.反射读取所有变量, 方法名
+	 * @Description: Step 2,3,4
 	 */
-	public void Parse() throws ClassNotFoundException {
+	public void ParseInit() throws ClassNotFoundException {
 		Class targetClass = Class.forName("com.example.demo.api.GetByIdTEST");
 		//获取自定字段
 		Field[] fields = targetClass.getDeclaredFields();
 		for (Field field : fields) {
 			this.params.add(field.getName());
 		}
+		//获取自定方法
 		Method[] methods = targetClass.getDeclaredMethods();
 		for (Method method : methods) {
 			this.methods.add(method.getName());
 		}
+		//交给ParamHandler
+		paramStatus.ParamHandler(this.params);
+		//交给methodHandler
+		methodStatus.MethodHandler(this.methods, this.paramStatus);
+	}
 
-		System.out.println(this.params);
+	/**
+	* @Description: Step 5
+	*/
+	public void ParseProcessing(){
+		//TODO
+
 	}
 }
