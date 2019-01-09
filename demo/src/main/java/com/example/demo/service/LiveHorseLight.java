@@ -19,7 +19,6 @@ public class LiveHorseLight {
 	private String secretKey = "qW4nvoVVi5";
 	private String username = "jun";
 	private String code = null;
-	private int status = 1;
 	private String t = null;
 
 
@@ -76,7 +75,6 @@ public class LiveHorseLight {
 	public JSonObject getJson() {
 		getSign();
 		JSonObject object = new JSonObject();
-		object.put("status", 1);
 		object.put("username", this.username);
 		object.put("sign", this.sign);
 		object.put("msg", this.msg);
@@ -119,7 +117,7 @@ public class LiveHorseLight {
 	 * @Author: LJH
 	 */
 	public String getSignForValidateOnly() {
-		String plain = "vid=" + vid + "&secretkey=" + secretKey + "&username=" + username + "&code=" + code + "&status=" + status + "&t=" + t;
+		String plain = "vid=" + vid + "&secretkey=" + secretKey + "&username=" + username + "&code=" + code + "&status=" + 1 + "&t=" + t;
 		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
 		return sign;
 	}
