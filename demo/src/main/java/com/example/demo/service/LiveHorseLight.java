@@ -17,7 +17,7 @@ public class LiveHorseLight {
 	private String vid = null;
 	private String uid = null;
 	private String secretKey = "qW4nvoVVi5";
-	private String username = "jun";
+	private String username = "版权所有 ©蓝铅笔 www.lanqb.com ID：15068746901正在观看";
 	private String code = null;
 	private String t = null;
 
@@ -145,12 +145,30 @@ public class LiveHorseLight {
 	 */
 	public static void main(String[] args) {
 		LiveHorseLight horseLight = new LiveHorseLight();
-		horseLight.setT("143020010115550947");
-		horseLight.setCode("abc");
-		horseLight.setVid("8f8482aaab11dd5f45f183a9192a04c5_8");
-		horseLight.setUsername("suki");
-		horseLight.setSecretKey("AiDQw1mAmi");
-		System.out.println("=========s=i=g=n==" + horseLight.getSign() + "=============");
+		horseLight.setUsername("版权所有 ©蓝铅笔 www.lanqb.com ID：15068746901正在观看");
+		horseLight.setT("1234");
+		horseLight.setCode("1234");
+		horseLight.setVid("1234");
+		horseLight.setUid("1234");
+		horseLight.setMsg("error");
+		horseLight.setFontSize("12");
+		horseLight.setFontColor("0xffffff");
+		horseLight.setSpeed("1500");
+		horseLight.setFilter("on");
+		horseLight.setSetting("1");
+		horseLight.setAlpha("0.5");
+		horseLight.setFilterAlpha("1");
+		horseLight.setFilterColor("0xffffff");
+		horseLight.setBlurX("2");
+		horseLight.setBlurY("2");
+		horseLight.setInterval("3");
+		horseLight.setLifeTime("60");
+		horseLight.setTweenTime("1");
+		horseLight.setStrength("4");
+		horseLight.setShow("on");
+		System.out.println(horseLight.getJson());
+
+
 	}
 
 	public void setVid(String vid) {
@@ -183,6 +201,74 @@ public class LiveHorseLight {
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+
+	public void setFontSize(String fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public void setFontColor(String fontColor) {
+		this.fontColor = fontColor;
+	}
+
+	public void setSpeed(String speed) {
+		this.speed = speed;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public void setSetting(String setting) {
+		this.setting = setting;
+	}
+
+	public void setAlpha(String alpha) {
+		this.alpha = alpha;
+	}
+
+	public void setFilterAlpha(String filterAlpha) {
+		this.filterAlpha = filterAlpha;
+	}
+
+	public void setFilterColor(String filterColor) {
+		this.filterColor = filterColor;
+	}
+
+	public void setBlurX(String blurX) {
+		this.blurX = blurX;
+	}
+
+	public void setBlurY(String blurY) {
+		this.blurY = blurY;
+	}
+
+	public void setTweenTime(String tweenTime) {
+		this.tweenTime = tweenTime;
+	}
+
+	public void setInterval(String interval) {
+		this.interval = interval;
+	}
+
+	public void setLifeTime(String lifeTime) {
+		this.lifeTime = lifeTime;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public void setShow(String show) {
+		this.show = show;
 	}
 
 	public void setSecretKey(String secretKey) {
