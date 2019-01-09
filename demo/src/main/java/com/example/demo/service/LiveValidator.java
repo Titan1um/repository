@@ -36,23 +36,6 @@ public class LiveValidator {
 	private String avatar = "http://live.polyv.net/assets/images/avatars/9avatar.jpg";
 	private int status = 1;
 
-
-	/**
-	 * @Description: just for test
-	 * @Author: LJH
-	 */ {
-		String tmp = nickname;
-		// 将普通字符创转换成application/x-www-from-urlencoded字符串
-		try {
-			BASE64Encoder encoder = new BASE64Encoder();
-			tmp = encoder.encode(tmp.getBytes(Charset.forName("UTF-8")));
-			nickname = URLEncoder.encode(tmp, "GBK");
-			System.out.println("========NickName:" + nickname + "========");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-	}
-
 	/**
 	 * @Description: 自定义授权
 	 * 较多的system.out.println,用以测试查看输出结果,应删除
