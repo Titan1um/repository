@@ -35,9 +35,24 @@ public class testAPI {
 			PropertyDescriptor descriptor = new PropertyDescriptor(key, clazz);
 			Method method = descriptor.getReadMethod();
 			Object value = method.invoke(api);
-
 			System.out.println(key + ":" + value);
+		}
 
+		Method[] methods = clazz.getDeclaredMethods();
+		for (Method method : methods) {
+			method.setAccessible(true);
+			String key = method.getName();
+			System.out.println("method key :" + key);
+			int count = method.getParameterCount();
+			System.out.println("count: " + count);
+			if (!key.equals("specify") && count > 0) {
+				//不是特定方法还带参的,应该是setter,忽略
+				continue;
+			} else if (key.equals("wait")||key.equals("notify")||key.equals("notifyAll")) {
+				continue;
+			}
+			method.invoke(api);
+			System.out.println("method " + key + " invoke");
 		}
 	}
 }
