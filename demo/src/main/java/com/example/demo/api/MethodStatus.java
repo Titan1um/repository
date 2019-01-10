@@ -22,15 +22,15 @@ public class MethodStatus {
 			}
 		}
 		trim();
-		//test
-		System.out.println(this.methods);
 	}
 
 	public void trim() {
+		List<String> tmpStr = new LinkedList<>();
 		for (String str : this.methods) {
-			if (str.contains("set") || str.contains("get")) {
-				this.methods.remove(str);
+			if (!str.contains("set")&&!str.contains("get")&&!str.contains("is")) {
+				tmpStr.add(str);
 			}
 		}
+		this.methods = tmpStr;
 	}
 }
