@@ -27,11 +27,12 @@ import java.util.*;
 
 public class APIParser {
 	/**
-	 * TODO: 1.总共有多少个API类可以写在properties中来读取,自动化switch配置
-	 *  2.反射读取所有变量,方法名
-	 *  3.与状态类ParamStatus一起交给MemberHandler,MemberHandler返回拿到的reqParam,同时初始化好ParamStatus
-	 *  4.与状态类MethodStatus一起交给MethodHandler,MethodHandler返回拿到的reqParam,同时初始化好MethodStatus
-	 *  5.根据状态进行:   -计算Sign 和 计算重载的方法的参数         其中根据标记令哪些参数用默认值,哪些参数用传参(亦可批量去properties读取  ---若采用properties则需要syso提示一次会用到哪些参数)
+	 * TODO: 1.总共有多少个API类可以写在properties中来读取(util.GetAllAPI已完成),自动化switch配置
+	 * FINISH:
+	 * 2.反射读取所有变量,方法名
+	 * 3.与状态类ParamStatus一起交给MemberHandler,MemberHandler返回拿到的reqParam,同时初始化好ParamStatus
+	 * 4.与状态类MethodStatus一起交给MethodHandler,MethodHandler返回拿到的reqParam,同时初始化好MethodStatus
+	 * 5.根据状态进行:   -计算Sign 和 计算重载的方法的参数         其中根据标记令哪些参数用默认值,哪些参数用传参(亦可批量去properties读取  ---若采用properties则需要syso提示一次会用到哪些参数)
 	 *                  -根据 是 POST 还是 GET,调用setGET()/setPOST()       其中setGET是替换参数  setPost是将参数丢入entity
 	 *                  -发起请求
 	 */
@@ -96,11 +97,11 @@ public class APIParser {
 	 * @Description: Step 5
 	 */
 	public void ParseProcessing() throws NoSuchFieldException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, IOException {
-		/**@TODO:   -doGet还是doPost    最后处理                                                                         用不同方法,一个setEntity 一个算url
+		/**        -doGet还是doPost    最后处理                                                                         用不同方法,一个setEntity 一个算url
 		 *           -若需要自定参数 则(读properties/cmd输入)   不需读取默认值     (从特殊方法中获取值/传入/读取)         目前假设全用默认值(只有默认值方法)
 		 *            -读默认值则ifDefault   计算sign:sign的默认计算方法   NoNeed 则不执行  sign/hash 则执行对应方法    需要计算sign则计算 不需要则留为null
 		 *             -根据doGet直接进行处理参数以及发起请求
-		 **@TODO: 对param的处理可以整合到ParamStatus类,同理method
+		 **@CONSIDERATION: 对param的处理可以整合到ParamStatus类,同理method
 		 */
 
 		//参数键值对初始化
@@ -108,10 +109,10 @@ public class APIParser {
 		String sign = null;
 
 		if (this.paramStatus.useDefaultValue) {
-			//TODO:重做ParamStatus以存储值?   暂时用Map NVP代替了
+			//@CONSIDERATION:重做ParamStatus以存储值?   暂时用Map NVP代替了
 			this.paramStatus.params.stream().forEach((p) -> NVP.put(p, getDefaultValue(p)));
 		}else {
-			//TODO:若不用默认值,外部获取值/传入/读取
+			//@CONSIDERATION:若不用默认值,外部获取值/传入/读取
 		}
 
 		//使用特殊计算方法
@@ -221,15 +222,12 @@ public class APIParser {
 	 */
 	private String getSignDefault(Map<String, String> NVP) {
 		/**
-		 * @Description:  @TODO:所有参数最后加上secretkey再进行sha1
+		 * @Description:  所有参数最后加上secretkey再进行sha1
 		 *                  Eg:sha1('cataid='.$cataid.'&JSONRPC='.$JSONRPC.'&writetoken='.$writetoken.$secretkey)
 		 */
 		StringBuilder plain = new StringBuilder();
 		this.paramStatus.params.stream().sorted().forEach((p) -> getPlainValue(p, NVP, plain));
 		plain.append(secretKey);
-		//TODO:delete this test syso
-		System.out.println("plain:" + plain);
-
 		return sha1(plain.toString());
 	}
 

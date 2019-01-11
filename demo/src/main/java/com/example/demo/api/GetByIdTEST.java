@@ -46,9 +46,7 @@ public class GetByIdTEST {
 	/**
 	* @Description:  若参数需要特殊计算, 则创建相同的方法名
 	* @Param: [NVP] 必须接收一个NVP(已知参数的值) 必须返回计算后的值(更新到APIParser中的NVP里)
-	* @TODO: 里面仅允许对NVP4SK的参数进行操作,禁止对默认参数进行操作
 	* @return: void
-	* @TODO: just for test delete plz
 	* @Author: LJH
 	*/
 	private String vid(Map<String, String> NVP4SK){
@@ -64,7 +62,6 @@ public class GetByIdTEST {
 
 	/**
 	 * @Description: NoNeedForSign, 当此方法存在时, 说明不需要Sign, 则由Parse的默认方法来计算Sign, 若需要Sign, 注释掉两个方法
-	 * @TODO: 此方法不需要sign, 作测试, 还是注释掉此函数
 	 */
 	private void NoNeedForSign() {}
 
