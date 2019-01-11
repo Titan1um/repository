@@ -17,7 +17,7 @@ public class GetByIdTEST {
 	 * Get的访问url ,需要parser替换的用[[param name]]包围
 	 * 注意param name 要与变量名一致
 	 */
-	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={[[vid]]}&readtoken={[[readtoken]]}";
+	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={[[vid]]}&readtoken={[[readtoken]]}&hi={[[hi]]}";
 
 	/**
 	* @Description:  post url
@@ -34,6 +34,10 @@ public class GetByIdTEST {
 	 */
 	private String readtoken = "66d670ea-c227-42dd-ac99-dd7dad85d23f";
 	private String vid = "7ca55a3c6fb1f445d9ab845be127b10b_7";
+	/**
+	* @Description:  单纯用作替换url而不用计算sign的参数
+	*/
+	private String hi_NotInSign = "hello";
 	/**
 	* @Description:  存在则使用默认值
 	*/
@@ -52,11 +56,6 @@ public class GetByIdTEST {
 		String vid = NVP4SK.get("vid");
 		return vid;
 	}
-
-	/**
-	 * @Description: 告诉Parser需要替换[[param name]]
-	 */
-//	private void reqParamForGet() {}    用urlForGet即可完成此需求
 
 	/**
 	 * @Description: 对应NoNeedForSign, 若有此方法存在, 则说明Sign方法需要重载, 若需要Sign, 注释掉两个方法
@@ -101,4 +100,8 @@ public class GetByIdTEST {
 	public void setUseDefaultValue(boolean useDefaultValue) {
 		this.useDefaultValue = useDefaultValue;
 	}
+
+	public String getHi_NotInSign() { return hi_NotInSign; }
+
+	public void setHi_NotInSign(String hi_NotInSign) { this.hi_NotInSign = hi_NotInSign; }
 }

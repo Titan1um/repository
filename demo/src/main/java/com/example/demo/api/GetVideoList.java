@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import com.example.demo.util.HttpClientUtil;
+import com.example.demo.util.JSonObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -39,17 +40,17 @@ public class GetVideoList {
 		try {
 //			new GetVideoList().getVideoListInPost();
 //			new GetVideoList().getAllReadyVideo();
-			new GetVideoList().getVideoList();
+			new GetVideoList().getVideoListInPostWithJson();//不行
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	* @Description:  获取所有视频
-	* @return: java.lang.String
-	* @Author: LJH
-	*/
+	 * @Description: 获取所有视频
+	 * @return: java.lang.String
+	 * @Author: LJH
+	 */
 	public String getVideoList() {
 		return getVideoListInGet();
 	}
@@ -76,6 +77,25 @@ public class GetVideoList {
 
 
 		String res = client.getToken(this.url, new UrlEncodedFormEntity(nvps, "utf-8"));
+
+		return res;
+	}
+
+	public String getVideoListInPostWithJson() {
+		String res = null;
+		HttpClientUtil client = HttpClientUtil.getInstance();
+		init2();
+		JSonObject json = new JSonObject();
+		json.put("catatree", this.catatree);
+		json.put("endDate", this.endDate);
+		json.put("format", this.format);
+		json.put("numPerPage", this.numPerPage);
+		json.put("pageNum", this.pageNum);
+		json.put("ptime", this.ptime);
+		json.put("startDate", this.startDate);
+		json.put("sign", this.sign);
+
+		res = client.getToken(this.url, json);
 
 		return res;
 	}
@@ -167,10 +187,10 @@ public class GetVideoList {
 	}
 
 	/**
-	* @Description:  获取所有已经就绪的视频
-	* @return: java.lang.String
-	* @Author: LJH
-	*/
+	 * @Description: 获取所有已经就绪的视频
+	 * @return: java.lang.String
+	 * @Author: LJH
+	 */
 	public String getAllReadyVideo() {
 		String string = getVideoList();
 		JSONObject jsonObject = new JSONObject(string);

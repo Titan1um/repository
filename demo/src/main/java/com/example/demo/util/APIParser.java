@@ -2,14 +2,17 @@ package com.example.demo.util;
 
 import com.example.demo.api.MethodStatus;
 import com.example.demo.api.ParamStatus;
+import com.sun.jnlp.ApiDialog;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -33,7 +36,7 @@ public class APIParser {
 	 *                  -发起请求
 	 */
 
-	private String secretKey = "";
+	private String secretKey = "qW4nvoVVi5";
 	private Class targetClass = null;
 	private List<String> params = new LinkedList<>();
 	private List<String> methods = new LinkedList<>();
@@ -42,7 +45,10 @@ public class APIParser {
 
 	public static void main(String[] args) {
 		try {
-			new APIParser().Parse();
+//			new APIParser().Parse("com.example.demo.api.GetByIdTEST");
+//			new APIParser().Parse("com.example.demo.api.API_GetVideoList");
+//			new APIParser().Parse("com.example.demo.api.API_GetById");
+			new APIParser().Parse("com.example.demo.api.API_PlayTimes");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -63,16 +69,16 @@ public class APIParser {
 	/**
 	 * @Description: 目前测试主入口 日后需整合逻辑
 	 */
-	public void Parse() throws IllegalAccessException, InstantiationException, ClassNotFoundException, IntrospectionException, NoSuchFieldException, InvocationTargetException, IOException {
-		this.ParseInit();
+	public void Parse(String _Full_Name_) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IntrospectionException, NoSuchFieldException, InvocationTargetException, IOException {
+		this.ParseInit( _Full_Name_ );
 		this.ParseProcessing();
 	}
 
 	/**
 	 * @Description: Step 2,3,4
 	 */
-	public void ParseInit() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		this.targetClass = Class.forName("com.example.demo.api.GetByIdTEST");
+	public void ParseInit(String _Full_Name_) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+		this.targetClass = Class.forName(_Full_Name_);
 		//获取自定字段放入params
 		Field[] fields = targetClass.getDeclaredFields();
 		Arrays.stream(fields).forEach((field) -> this.params.add(field.getName()));
@@ -109,7 +115,6 @@ public class APIParser {
 		}
 
 		//使用特殊计算方法
-		System.out.println("目前特殊计算方法:"+this.methodStatus.methods);
 		this.methodStatus.methods.stream().forEach((name)-> {
 			try {
 				//加入secretKey的NVP
@@ -154,6 +159,12 @@ public class APIParser {
 			String url = (String) method.invoke(targetClass.newInstance());
 			//替换占位符
 			for (String key : NVP.keySet()) {
+				//处理_NotInSign后缀的参数
+				if(key.contains("_NotInSign")){
+					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
+						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+					}
+				}
 				if (url.contains("{[[" + key + "]]}")) {
 					url = url.replace(("{[[" + key + "]]}"), NVP.get(key));
 				}
@@ -161,22 +172,48 @@ public class APIParser {
 			System.out.println("urlForGet:"+url);
 
 			//执行doGet
-			this.doGet(url);
+			String res = this.doGet(url);
+			System.out.println("Result:"+res);
 
 		}else {
 			//获取urlForPost
 			PropertyDescriptor descriptor = new PropertyDescriptor("urlForPost", targetClass);
 			Method method = descriptor.getReadMethod();
 			String url = (String) method.invoke(targetClass.newInstance());
-			//将参数都放入jsonObject方便做成entity
-			JSONObject json = new JSONObject();
-			NVP.keySet().forEach((key) -> {
-				json.put(key, NVP.get(key));
+			//处理带_NotInSign参数
+			for (String key : NVP.keySet()) {
+				if(key.contains("_NotInSign")){
+					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
+						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+					}
+				}
+			}
+			//将参数都放入做成NVP格式 方便做成entity
+//			JSonObject json = new JSonObject();
+//			json的格式不行
+//			NVP.keySet().stream().sorted().forEach((key) -> {
+//				if (!key.contains("_NotInSign")) {
+//					json.put(key, NVP.get(key));
+//				}
+//			});
+//			this.doPost(url,json);
+//			System.out.println(json);
+			//将参数都放入做成NVP格式 方便做成entity
+			ArrayList nvps = new ArrayList();
+			NVP.keySet().stream().sorted().forEach((key) -> {
+				if(!key.contains("_NotInSign")) {
+					nvps.add(new BasicNameValuePair(key, NVP.get(key)));
+				}
 			});
-			this.doPost(url,json);
+			String res = doPost(url,new UrlEncodedFormEntity(nvps, "utf-8"));
+			System.out.println("methods:"+this.methodStatus.methods);
+			System.out.println("params:"+this.paramStatus.params);
+			System.out.println("nvps:"+nvps);
+			System.out.println("NVP:"+NVP);
+			System.out.println("urlForPost"+url);
+			System.out.println("Result:"+res);
 
 		}
-
 	}
 
 	/**
@@ -204,7 +241,7 @@ public class APIParser {
 	private void getPlainValue(String name, Map<String, String> NVP, StringBuilder plain) {
 		//取得参数名
 			String value = NVP.get(name);
-			if (value.equals("") || value.equals(null) || null == value) {
+			if (value.equals("") || value.equals(null) || null == value ||name.contains("_NotInSign")) {
 				;
 			} else if (plain.length() != 0) {
 				plain.append("&" + name + "=" + value);
@@ -262,28 +299,43 @@ public class APIParser {
 	}
 
 	//由于使用main来作工具,无法Autowired读项目中的HttpClient中的InfoLogger,故手动Http
-	private void doGet(String url) throws IOException {
+	private String doGet(String url) throws IOException {
 		HttpGet httpGet = new HttpGet(url);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = client.execute(httpGet);
-		System.out.println("request result:"+EntityUtils.toString(response.getEntity()));
+		String res = EntityUtils.toString(response.getEntity());
 
 		client.close();
 		response.close();
+		return res;
 	}
 
-	//接收url jsonObject ,处理成entity然后请求
-	private void doPost(String url, JSONObject json) throws IOException {
+	//接收url JSonObject ,处理成entity然后请求
+	private void doPost(String url, JSonObject json) throws IOException {
 		StringEntity entity = new StringEntity(json.toString());
 		System.out.println("json:"+json);
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(entity);
+		httpPost.setHeader("Content-Type","application/json;charset=UTF-8");
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = client.execute(httpPost);
 		System.out.println("request result:"+EntityUtils.toString(response.getEntity()));
 
 		client.close();
 		response.close();
+	}
+
+	//接收url NameValuePair ,处理成entity然后请求
+	private String doPost(String url, HttpEntity entity) throws IOException {
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setEntity(entity);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = client.execute(httpPost);
+		String res =EntityUtils.toString(response.getEntity());
+
+		client.close();
+		response.close();
+		return res;
 	}
 
 }

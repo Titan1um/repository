@@ -152,6 +152,11 @@ public class HttpClientUtil {
 		return doPost(setPost(url, entity));
 	}
 
+	public String getToken(String url, JSonObject json) {
+		StringEntity entity = new StringEntity(json.toString(), "utf-8");
+		return doPost(setPost(url, entity));
+	}
+
 
 	public String getToken(String url, List list) {
 		HttpEntity entity = null;
