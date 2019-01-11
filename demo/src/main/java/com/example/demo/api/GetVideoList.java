@@ -37,8 +37,9 @@ public class GetVideoList {
 
 	public static void main(String[] args) {
 		try {
-			new GetVideoList().getVideoListInPost();
-			new GetVideoList().getAllReadyVideo();
+//			new GetVideoList().getVideoListInPost();
+//			new GetVideoList().getAllReadyVideo();
+			new GetVideoList().getVideoList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
