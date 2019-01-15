@@ -15,8 +15,18 @@ public class LiveHorseLightController {
 	@Autowired
 	LiveHorseLight liveHorseLight;
 
+	/**
+	* @Description:  直播跑马灯
+	* @Param: [req, rsp]
+	* @return: java.lang.String
+	*/
 	@GetMapping("/lijunhong/livehorselight")
 	public String LiveHorseLight(HttpServletRequest req, HttpServletResponse rsp) {
 		return liveHorseLight.getJsonString(req);
+	}
+
+	@GetMapping("/lijunhong/livevalidate")
+	public String LiveValidate(HttpServletRequest req, HttpServletResponse rsp){
+		return liveHorseLight.getJsonForValidateOnly(req);
 	}
 }

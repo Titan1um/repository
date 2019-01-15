@@ -22,6 +22,7 @@ public class LiveHorseLight {
 	private String t = null;
 
 
+	private int status = 1;
 	private String sign = null;
 	private String msg = "error";
 	private String fontSize = "12";
@@ -101,14 +102,25 @@ public class LiveHorseLight {
 	 * @return: com.example.demo.util.JSonObject
 	 * @Author: LJH
 	 */
-	public JSonObject getJsonForValidateOnly() {
+	public String getJsonForValidateOnly(HttpServletRequest req) {
+		//设置参数
+		String callBack = req.getParameter("callback");
+		//vid此时是频道id
+		this.setVid(req.getParameter("vid"));
+		this.setCode(req.getParameter("code"));
+		this.setT(req.getParameter("t"));
+		//获取sign
 		getSignForValidateOnly();
 		JSonObject object = new JSonObject();
 		//status可判断用户是否为合法用户后再返回
-		object.put("status", 1);
+		object.put("status", this.status);
 		object.put("username", this.username);
+		object.put("show", this.show);
 		object.put("sign", this.sign);
-		return object;
+		object.put("message", "该学员不是付费会员，请购买套餐后再刷新页面播放");
+		if (null == callBack|| callBack.equals(""))
+			return object.toString();
+		return callBack+"("+object.toString()+")";
 	}
 
 	/**
@@ -117,7 +129,7 @@ public class LiveHorseLight {
 	 * @Author: LJH
 	 */
 	public String getSignForValidateOnly() {
-		String plain = "vid=" + vid + "&secretkey=" + secretKey + "&username=" + username + "&code=" + code + "&status=" + 1 + "&t=" + t;
+		String plain="vid="+vid+"&username="+username+"&code="+code+"&status="+status+"&s="+show+"&t="+t;
 		this.sign = DigestUtils.md5Hex(plain.getBytes(Charset.forName("UTF-8")));
 		return sign;
 	}

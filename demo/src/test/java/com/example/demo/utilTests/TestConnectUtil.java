@@ -11,9 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @Description: ensure that read the correct information from application.properties
@@ -82,7 +80,14 @@ public class TestConnectUtil {
 	@Test
 	public void testUtil(){
 		try {
-			connectUtil.getInstance();
+			Connection conn = connectUtil.getInstance();
+			PreparedStatement pst = conn.prepareStatement("select * from upload");
+			ResultSet res = pst.executeQuery();
+			while(res.next()){
+				System.out.println(res.getString(1));
+				System.out.println(res.getString(2));
+				System.out.println(res.getString(3));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
