@@ -104,7 +104,7 @@ public class LiveHorseLight {
 	 */
 	public String getJsonForValidateOnly(HttpServletRequest req) {
 		//设置参数
-		String callBack = req.getParameter("v");
+		String callBack = req.getParameter("callback");
 		//vid此时是频道id
 		this.setVid(req.getParameter("vid"));
 		this.setCode(req.getParameter("code"));
