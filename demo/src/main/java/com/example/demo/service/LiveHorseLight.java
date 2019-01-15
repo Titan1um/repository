@@ -118,8 +118,9 @@ public class LiveHorseLight {
 		object.put("show", this.show);
 		object.put("sign", this.sign);
 		object.put("message", "该学员不是付费会员，请购买套餐后再刷新页面播放");
-		if (null == callBack|| callBack.equals(""))
+		if (null == callBack|| callBack.equals("")) {
 			return object.toString();
+		}
 		return callBack+"("+object.toString()+")";
 	}
 

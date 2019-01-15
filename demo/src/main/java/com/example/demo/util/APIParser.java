@@ -2,7 +2,6 @@ package com.example.demo.util;
 
 import com.example.demo.api.MethodStatus;
 import com.example.demo.api.ParamStatus;
-import com.sun.jnlp.ApiDialog;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
