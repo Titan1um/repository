@@ -25,7 +25,7 @@ public class LiveHorseLightController {
 		return liveHorseLight.getJsonString(req);
 	}
 
-	@GetMapping(value = "/lijunhong/livevalidate", produces = "application/json;charset=UTF-8")
+	@GetMapping("/lijunhong/livevalidate")
 	public String LiveValidate(HttpServletRequest req, HttpServletResponse rsp){
 		return liveHorseLight.getJsonForValidateOnly(req);
 	}
