@@ -32,8 +32,8 @@ public class APIParser {
 	 * 3.与状态类ParamStatus一起交给MemberHandler,MemberHandler返回拿到的reqParam,同时初始化好ParamStatus
 	 * 4.与状态类MethodStatus一起交给MethodHandler,MethodHandler返回拿到的reqParam,同时初始化好MethodStatus
 	 * 5.根据状态进行:   -计算Sign 和 计算重载的方法的参数         其中根据标记令哪些参数用默认值,哪些参数用传参(亦可批量去properties读取  ---若采用properties则需要syso提示一次会用到哪些参数)
-	 *                  -根据 是 POST 还是 GET,调用setGET()/setPOST()       其中setGET是替换参数  setPost是将参数丢入entity
-	 *                  -发起请求
+	 * -根据 是 POST 还是 GET,调用setGET()/setPOST()       其中setGET是替换参数  setPost是将参数丢入entity
+	 * -发起请求
 	 */
 
 	private String secretKey = "qW4nvoVVi5";
@@ -48,7 +48,8 @@ public class APIParser {
 //			new APIParser().Parse("com.example.demo.api.GetByIdTEST");
 //			new APIParser().Parse("com.example.demo.api.API_GetVideoList");
 //			new APIParser().Parse("com.example.demo.api.API_GetById");
-			new APIParser().Parse("com.example.demo.api.API_PlayTimes");
+			new APIParser().Parse("com.example.demo.api.API_Cataid");
+//			new APIParser().Parse("com.example.demo.api.API_Upload");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -70,7 +71,7 @@ public class APIParser {
 	 * @Description: 目前测试主入口 日后需整合逻辑
 	 */
 	public void Parse(String _Full_Name_) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IntrospectionException, NoSuchFieldException, InvocationTargetException, IOException {
-		this.ParseInit( _Full_Name_ );
+		this.ParseInit(_Full_Name_);
 		this.ParseProcessing();
 	}
 
@@ -100,7 +101,7 @@ public class APIParser {
 		 *           -若需要自定参数 则(读properties/cmd输入)   不需读取默认值     (从特殊方法中获取值/传入/读取)         目前假设全用默认值(只有默认值方法)
 		 *            -读默认值则ifDefault   计算sign:sign的默认计算方法   NoNeed 则不执行  sign/hash 则执行对应方法    需要计算sign则计算 不需要则留为null
 		 *             -根据doGet直接进行处理参数以及发起请求
-		 **@CONSIDERATION: 对param的处理可以整合到ParamStatus类,同理method
+		 **@CONSIDERATION: 对param的处理可以整合到ParamStatus类, 同理method
 		 */
 
 		//参数键值对初始化
@@ -110,22 +111,22 @@ public class APIParser {
 		if (this.paramStatus.useDefaultValue) {
 			//@CONSIDERATION:重做ParamStatus以存储值?   暂时用Map NVP代替了
 			this.paramStatus.params.stream().forEach((p) -> NVP.put(p, getDefaultValue(p)));
-		}else {
+		} else {
 			//@CONSIDERATION:若不用默认值,外部获取值/传入/读取
 		}
 
 		//使用特殊计算方法
-		this.methodStatus.methods.stream().forEach((name)-> {
+		this.methodStatus.methods.stream().forEach((name) -> {
 			try {
 				//加入secretKey的NVP
-				Map<String,String> NVP4SK = (Map<String, String>) ((LinkedHashMap<String, String>) NVP).clone();
+				Map<String, String> NVP4SK = (Map<String, String>) ((LinkedHashMap<String, String>) NVP).clone();
 				NVP4SK.put("secretkey", secretKey);
 				//取得对应method
-				Method method = targetClass.getDeclaredMethod(name,new Class[]{Map.class});
+				Method method = targetClass.getDeclaredMethod(name, new Class[]{Map.class});
 				//设置私有可用
 				method.setAccessible(true);
 				//调用并获取返回,并更新
-				String value = (String) method.invoke(targetClass.newInstance(),NVP4SK);
+				String value = (String) method.invoke(targetClass.newInstance(), NVP4SK);
 				NVP.put(name, value);
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
@@ -139,18 +140,18 @@ public class APIParser {
 		});
 
 
-		if (!this.methodStatus.NoNeedForSign){
+		if (!this.methodStatus.NoNeedForSign) {
 			//查找sign算法有没被重载
-			if(this.methodStatus.methods.contains("sign")){
+			if (this.methodStatus.methods.contains("sign")) {
 				//若sign被重载
-			}else {
+			} else {
 				//默认sign算法
 				NVP.put("sign", getSignDefault(NVP));
 			}
 		}
 
 		//判断请求类型(post/get)
-		if(this.paramStatus.doGet){
+		if (this.paramStatus.doGet) {
 			//doGet 则要做字符匹配doGetURL中的东东并替换
 
 			//获取urlForGet
@@ -160,7 +161,7 @@ public class APIParser {
 			//替换占位符
 			for (String key : NVP.keySet()) {
 				//处理_NotInSign后缀的参数
-				if(key.contains("_NotInSign")){
+				if (key.contains("_NotInSign")) {
 					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
 						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
 					}
@@ -169,20 +170,20 @@ public class APIParser {
 					url = url.replace(("{[[" + key + "]]}"), NVP.get(key));
 				}
 			}
-			System.out.println("urlForGet:"+url);
+			System.out.println("urlForGet:" + url);
 
 			//执行doGet
 			String res = this.doGet(url);
-			System.out.println("Result:"+res);
+			System.out.println("Result:" + res);
 
-		}else {
+		} else {
 			//获取urlForPost
 			PropertyDescriptor descriptor = new PropertyDescriptor("urlForPost", targetClass);
 			Method method = descriptor.getReadMethod();
 			String url = (String) method.invoke(targetClass.newInstance());
 			//处理带_NotInSign参数
 			for (String key : NVP.keySet()) {
-				if(key.contains("_NotInSign")){
+				if (key.contains("_NotInSign")) {
 					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
 						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
 					}
@@ -201,17 +202,17 @@ public class APIParser {
 			//将参数都放入做成NVP格式 方便做成entity
 			ArrayList nvps = new ArrayList();
 			NVP.keySet().stream().sorted().forEach((key) -> {
-				if(!key.contains("_NotInSign")) {
+				if (!key.contains("_NotInSign")) {
 					nvps.add(new BasicNameValuePair(key, NVP.get(key)));
 				}
 			});
-			String res = doPost(url,new UrlEncodedFormEntity(nvps, "utf-8"));
-			System.out.println("methods:"+this.methodStatus.methods);
-			System.out.println("params:"+this.paramStatus.params);
-			System.out.println("nvps:"+nvps);
-			System.out.println("NVP:"+NVP);
-			System.out.println("urlForPost"+url);
-			System.out.println("Result:"+res);
+			String res = doPost(url, new UrlEncodedFormEntity(nvps, "utf-8"));
+			System.out.println("methods:" + this.methodStatus.methods);
+			System.out.println("params:" + this.paramStatus.params);
+			System.out.println("nvps:" + nvps);
+			System.out.println("NVP:" + NVP);
+			System.out.println("urlForPost" + url);
+			System.out.println("Result:" + res);
 
 		}
 	}
@@ -221,7 +222,7 @@ public class APIParser {
 	 */
 	private String getSignDefault(Map<String, String> NVP) {
 		/**
-		 * @Description:  所有参数最后加上secretkey再进行sha1
+		 * @Description: 所有参数最后加上secretkey再进行sha1
 		 *                  Eg:sha1('cataid='.$cataid.'&JSONRPC='.$JSONRPC.'&writetoken='.$writetoken.$secretkey)
 		 */
 		StringBuilder plain = new StringBuilder();
@@ -231,25 +232,25 @@ public class APIParser {
 	}
 
 	/**
-	* @Description:  获得name参数的对应默认值,给计算DefaultSign用的
-	* @Param: [name, plain]
-	* @return: void
+	 * @Description: 获得name参数的对应默认值, 给计算DefaultSign用的
+	 * @Param: [name, plain]
+	 * @return: void
 	 */
 	private void getPlainValue(String name, Map<String, String> NVP, StringBuilder plain) {
 		//取得参数名
-			String value = NVP.get(name);
-			if (value.equals("") || value.equals(null) || null == value ||name.contains("_NotInSign")) {
-				;
-			} else if (plain.length() != 0) {
-				plain.append("&" + name + "=" + value);
-			} else {
-				plain.append("" + name + "=" + value);
-			}
+		String value = NVP.get(name);
+		if (value.equals("") || null == value || name.contains("_NotInSign")) {
+			;
+		} else if (plain.length() != 0) {
+			plain.append("&" + name + "=" + value);
+		} else {
+			plain.append("" + name + "=" + value);
+		}
 	}
 
 	/**
-	* @Description: 获取所有参数对应默认值
-	*/
+	 * @Description: 获取所有参数对应默认值
+	 */
 	private String getDefaultValue(String name) {
 		PropertyDescriptor descriptor = null;
 		try {
@@ -268,7 +269,7 @@ public class APIParser {
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
-		return  null;
+		return null;
 	}
 
 	/**
@@ -281,8 +282,11 @@ public class APIParser {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		digest.update(plain.getBytes(Charset.forName("UTF-8")));
-		byte[] messageDigest = digest.digest();
+		byte[] messageDigest = "".getBytes(Charset.forName("UTF-8"));
+		if(digest != null) {
+			digest.update(plain.getBytes(Charset.forName("UTF-8")));
+			messageDigest = digest.digest();
+		}
 
 		StringBuffer hexString = new StringBuffer();
 		for (int i = 0; i < messageDigest.length; i++) {
@@ -310,13 +314,13 @@ public class APIParser {
 	//接收url JSonObject ,处理成entity然后请求
 	private void doPost(String url, JSonObject json) throws IOException {
 		StringEntity entity = new StringEntity(json.toString());
-		System.out.println("json:"+json);
+		System.out.println("json:" + json);
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.setEntity(entity);
-		httpPost.setHeader("Content-Type","application/json;charset=UTF-8");
+		httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = client.execute(httpPost);
-		System.out.println("request result:"+EntityUtils.toString(response.getEntity()));
+		System.out.println("request result:" + EntityUtils.toString(response.getEntity()));
 
 		client.close();
 		response.close();
@@ -328,7 +332,7 @@ public class APIParser {
 		httpPost.setEntity(entity);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = client.execute(httpPost);
-		String res =EntityUtils.toString(response.getEntity());
+		String res = EntityUtils.toString(response.getEntity());
 
 		client.close();
 		response.close();
