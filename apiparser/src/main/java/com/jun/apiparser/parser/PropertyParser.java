@@ -36,6 +36,12 @@ public class PropertyParser {
 	 * -发起请求
 	 */
 
+	/**
+	 * TODO: 2019/1/18
+	 *          add.对ptime的判定
+	 *              对noNeedForSign
+	 *              将properties读法与APIParser的差异交给PropertiesStatus处理,之后保存到PropertiesStatus类中同样调用
+	 */
 	private String secretKey = "qW4nvoVVi5";
 	private Class targetClass = null;
 	private List<String> params = new LinkedList<>();
@@ -44,26 +50,7 @@ public class PropertyParser {
 	private MethodStatus methodStatus = new MethodStatus();
 
 	public static void main(String[] args) {
-		try {
-//			new APIParser().Parse("com.example.demo.api.GetByIdTEST");
-			new APIParser().Parse("com.example.demo.api.API_GetVideoList");
-//			new APIParser().Parse("com.example.demo.api.API_GetById");
-//			new APIParser().Parse("com.example.demo.api.API_Cataid");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IntrospectionException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	/**

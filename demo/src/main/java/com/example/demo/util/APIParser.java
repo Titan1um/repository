@@ -48,7 +48,8 @@ public class APIParser {
 //			new APIParser().Parse("com.example.demo.api.GetByIdTEST");
 //			new APIParser().Parse("com.example.demo.api.API_GetVideoList");
 //			new APIParser().Parse("com.example.demo.api.API_GetById");
-			new APIParser().Parse("com.example.demo.api.API_Cataid");
+			new APIParser().Parse("com.example.demo.api.API_GetVideoMsg");
+//			new APIParser().Parse("com.example.demo.api.API_Cataid");
 //			new APIParser().Parse("com.example.demo.api.API_Upload");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
