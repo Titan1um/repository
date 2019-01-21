@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<span>
+    <a href="/api">首页</a><br>
+</span>
+<span id="params">
+    <label id="hey_label">hey</label> <input type="text" id="hey_text" value="hey"><br>
+    <label id = "res"></label>
+</span>
+
+
+<script>
+    function changeT() {
+        document.getElementById("hey_label").innerHTML = "yo";
+        document.getElementById("hey_text").value="yo";
+    };
+    function append() {
+        document.getElementById("params").append("<label id=\"yo_label\">yo</label> <input type=\"text\" id=\"yo_text\" value=\"yo\"><br>");
+    };
+    function test() {
+        var res;
+        document.getElementById("res").innerHTML="";
+    }
+</script>
+<button class='btn' onclick="changeT();" >change</button><br>
+<button class='btn' onclick="append();" >append</button><br>
+<button class='btn' onclick="test();" >test</button><br>
+</body>
+</html>

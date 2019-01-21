@@ -149,7 +149,7 @@ public class PropertyParser {
 //			System.out.println(json);
 			//将参数都放入做成NVP格式 方便做成entity
 			ArrayList nvps = new ArrayList();
-			Map<String, String> finalNVP = NVP;//TODO:容易出错 sb编译
+			Map<String, String> finalNVP = NVP;
 			NVP.keySet().stream().sorted().forEach((key) -> {
 				if (!key.contains("_NotInSign")) {
 					nvps.add(new BasicNameValuePair(key, finalNVP.get(key)));
@@ -177,7 +177,7 @@ public class PropertyParser {
 		 */
 		StringBuilder plain = new StringBuilder();
 		this.propertiesStatus.properties.stream().sorted().forEach((p) -> getPlainValue(p, NVP, plain));
-		plain.append(secretKey);
+		plain.append(this.propertiesStatus.secretkey);
 		return sha1(plain.toString());
 	}
 

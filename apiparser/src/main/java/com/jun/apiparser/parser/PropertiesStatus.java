@@ -15,6 +15,7 @@ public class PropertiesStatus {
 	public Map<String,String> params = new LinkedHashMap<String,String>();
 	public boolean NoNeedForSign = false;
 	public String url;
+	public String secretkey="qW4nvoVVi5";
 	List<String> properties = new LinkedList<>();
 	private BufferedReader in;
 
@@ -82,6 +83,10 @@ public class PropertiesStatus {
 				break;
 			case "ptime":
 				this.params.put("ptime", String.valueOf(System.currentTimeMillis()));
+				break;
+			case "secretkey":
+				this.secretkey= contact(strs);
+				System.out.println("==========================="+secretkey);
 				break;
 			default:
 				this.params.put(param, contact(strs));

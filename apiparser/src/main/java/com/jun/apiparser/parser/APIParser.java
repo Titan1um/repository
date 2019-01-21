@@ -1,7 +1,5 @@
 package com.jun.apiparser.parser;
 
-import com.jun.apiparser.parser.MethodStatus;
-import com.jun.apiparser.parser.ParamStatus;
 import com.jun.apiparser.utils.JSonObject;
 
 import org.apache.http.HttpEntity;
