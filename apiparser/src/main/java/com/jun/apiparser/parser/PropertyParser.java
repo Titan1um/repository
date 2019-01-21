@@ -13,17 +13,15 @@ import org.apache.http.util.EntityUtils;
 
 import com.jun.apiparser.utils.JSonObject;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+/**
+* @Author: LJH
+*/
 public class PropertyParser {
 	/**
 	 * TODO: 1.总共有多少个API类可以写在properties中来读取(util.GetAllAPI已完成),自动化switch配置
@@ -43,46 +41,39 @@ public class PropertyParser {
 	 *              将properties读法与APIParser的差异交给PropertiesStatus处理,之后保存到PropertiesStatus类中同样调用
 	 */
 	private String secretKey = "qW4nvoVVi5";
-	private Class targetClass = null;
-	private List<String> params = new LinkedList<>();
-	private List<String> methods = new LinkedList<>();
-	private ParamStatus paramStatus = new ParamStatus();
-	private MethodStatus methodStatus = new MethodStatus();
+	private PropertiesStatus propertiesStatus = new PropertiesStatus();
 
 	public static void main(String[] args) {
-
+		new PropertyParser().Parse("getVideoList");
 	}
 
 	/**
 	 * @Description: 目前测试主入口 日后需整合逻辑
 	 */
-	public void Parse(String _Full_Name_) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IntrospectionException, NoSuchFieldException, InvocationTargetException, IOException {
-		this.ParseInit(_Full_Name_);
-		this.ParseProcessing();
+	public void Parse(String fileName)  {
+		this.ParseInit(fileName);
+		try {
+			this.ParseProcessing();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @Description: Step 2,3,4
 	 */
-	public void ParseInit(String _Full_Name_) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		this.targetClass = Class.forName(_Full_Name_);
-		//获取自定字段放入params
-		Field[] fields = targetClass.getDeclaredFields();
-		Arrays.stream(fields).forEach((field) -> this.params.add(field.getName()));
-		//获取自定方法放入methods
-		Method[] methods = targetClass.getDeclaredMethods();
-		Arrays.stream(methods).forEach((method -> this.methods.add(method.getName())));
-		//交给ParamHandler
-		this.paramStatus.ParamHandler(this.params);
-		//交给methodHandler
-		this.methodStatus.MethodHandler(this.methods, this.paramStatus);
+	public void ParseInit(String fileName) {
+
+		if(!propertiesStatus.PropertiesHandler(fileName+".properties")){
+			System.out.println("Failed to get properties.");
+		}
 
 	}
 
 	/**
 	 * @Description: Step 5
 	 */
-	public void ParseProcessing() throws NoSuchFieldException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, IOException {
+	public void ParseProcessing() throws IOException {
 		/**        -doGet还是doPost    最后处理                                                                         用不同方法,一个setEntity 一个算url
 		 *           -若需要自定参数 则(读properties/cmd输入)   不需读取默认值     (从特殊方法中获取值/传入/读取)         目前假设全用默认值(只有默认值方法)
 		 *            -读默认值则ifDefault   计算sign:sign的默认计算方法   NoNeed 则不执行  sign/hash 则执行对应方法    需要计算sign则计算 不需要则留为null
@@ -94,41 +85,16 @@ public class PropertyParser {
 		Map<String, String> NVP = new LinkedHashMap<>();
 		String sign = null;
 
-		if (this.paramStatus.useDefaultValue) {
+		if (this.propertiesStatus.useDefaultValue) {
 			//@CONSIDERATION:重做ParamStatus以存储值?   暂时用Map NVP代替了
-			this.paramStatus.params.stream().forEach((p) -> NVP.put(p, getDefaultValue(p)));
+			NVP = this.propertiesStatus.params;
 		} else {
 			//@CONSIDERATION:若不用默认值,外部获取值/传入/读取
 		}
 
-		//使用特殊计算方法
-		this.methodStatus.methods.stream().forEach((name) -> {
-			try {
-				//加入secretKey的NVP
-				Map<String, String> NVP4SK = (Map<String, String>) ((LinkedHashMap<String, String>) NVP).clone();
-				NVP4SK.put("secretkey", secretKey);
-				//取得对应method
-				Method method = targetClass.getDeclaredMethod(name, new Class[]{Map.class});
-				//设置私有可用
-				method.setAccessible(true);
-				//调用并获取返回,并更新
-				String value = (String) method.invoke(targetClass.newInstance(), NVP4SK);
-				NVP.put(name, value);
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		});
-
-
-		if (!this.methodStatus.NoNeedForSign) {
+		if (!this.propertiesStatus.NoNeedForSign) {
 			//查找sign算法有没被重载
-			if (this.methodStatus.methods.contains("sign")) {
+			if (this.propertiesStatus.properties.contains("sign")) {
 				//若sign被重载
 			} else {
 				//默认sign算法
@@ -137,21 +103,19 @@ public class PropertyParser {
 		}
 
 		//判断请求类型(post/get)
-		if (this.paramStatus.doGet) {
+		if (this.propertiesStatus.doGet) {
 			//doGet 则要做字符匹配doGetURL中的东东并替换
 
 			//获取urlForGet
-			PropertyDescriptor descriptor = new PropertyDescriptor("urlForGet", targetClass);
-			Method method = descriptor.getReadMethod();
-			String url = (String) method.invoke(targetClass.newInstance());
+			String url = this.propertiesStatus.url;
 			//替换占位符
 			for (String key : NVP.keySet()) {
-				//处理_NotInSign后缀的参数
-				if (key.contains("_NotInSign")) {
-					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
-						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+					//处理_NotInSign后缀的参数
+					if (key.contains("_NotInSign")) {
+						if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
+							url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+						}
 					}
-				}
 				if (url.contains("{[[" + key + "]]}")) {
 					url = url.replace(("{[[" + key + "]]}"), NVP.get(key));
 				}
@@ -164,9 +128,7 @@ public class PropertyParser {
 
 		} else {
 			//获取urlForPost
-			PropertyDescriptor descriptor = new PropertyDescriptor("urlForPost", targetClass);
-			Method method = descriptor.getReadMethod();
-			String url = (String) method.invoke(targetClass.newInstance());
+			String url = this.propertiesStatus.url;
 			//处理带_NotInSign参数
 			for (String key : NVP.keySet()) {
 				if (key.contains("_NotInSign")) {
@@ -187,16 +149,18 @@ public class PropertyParser {
 //			System.out.println(json);
 			//将参数都放入做成NVP格式 方便做成entity
 			ArrayList nvps = new ArrayList();
+			Map<String, String> finalNVP = NVP;//TODO:容易出错 sb编译
 			NVP.keySet().stream().sorted().forEach((key) -> {
 				if (!key.contains("_NotInSign")) {
-					nvps.add(new BasicNameValuePair(key, NVP.get(key)));
+					nvps.add(new BasicNameValuePair(key, finalNVP.get(key)));
 				}
 			});
 			String res = doPost(url, new UrlEncodedFormEntity(nvps, "utf-8"));
-			System.out.println("methods:" + this.methodStatus.methods);
-			System.out.println("params:" + this.paramStatus.params);
+			System.out.println("methods:" + this.propertiesStatus.properties);
+			System.out.println("params:" + this.propertiesStatus.params);
 			System.out.println("nvps:" + nvps);
 			System.out.println("NVP:" + NVP);
+			System.out.println("finalNVP:"+finalNVP);
 			System.out.println("urlForPost" + url);
 			System.out.println("Result:" + res);
 
@@ -212,7 +176,7 @@ public class PropertyParser {
 		 *                  Eg:sha1('cataid='.$cataid.'&JSONRPC='.$JSONRPC.'&writetoken='.$writetoken.$secretkey)
 		 */
 		StringBuilder plain = new StringBuilder();
-		this.paramStatus.params.stream().sorted().forEach((p) -> getPlainValue(p, NVP, plain));
+		this.propertiesStatus.properties.stream().sorted().forEach((p) -> getPlainValue(p, NVP, plain));
 		plain.append(secretKey);
 		return sha1(plain.toString());
 	}
@@ -232,30 +196,6 @@ public class PropertyParser {
 		} else {
 			plain.append("" + name + "=" + value);
 		}
-	}
-
-	/**
-	 * @Description: 获取所有参数对应默认值
-	 */
-	private String getDefaultValue(String name) {
-		PropertyDescriptor descriptor = null;
-		try {
-			//取得方法
-			descriptor = new PropertyDescriptor(name, targetClass);
-			Method method = descriptor.getReadMethod();
-			//执行方法
-			Object value = method.invoke(targetClass.newInstance());
-			return String.valueOf(value);
-		} catch (IntrospectionException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	/**

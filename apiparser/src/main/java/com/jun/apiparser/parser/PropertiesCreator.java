@@ -16,7 +16,8 @@ import java.util.List;
 public class PropertiesCreator {
 	/**
 	 * @TODO: 1.读取File/properties/读取调用参数
-			 * 2.分析文本
+			 * 2.分析文本(主要是生成get方式的url===========================================以及占位符类{userid}变{[[]]})
+	         *                                                   这个交给前端部分搞估计更舒服
 			 * 3.写入class(默认项1~2个 getter setter)
 			 * 4.重启生效
 			 * 5.提供删除API功能(可能会输错/故提供删除)
