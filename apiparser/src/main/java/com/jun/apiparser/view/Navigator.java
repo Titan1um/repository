@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -14,14 +15,6 @@ public class Navigator {
 
 
 	public static void main(String[] args) {
-//		//test for package scan
-//		String packageName = "com.jun.apiparser.api";
-//
-//		List<String> classNames = getClassName(packageName);
-//		for (String className : classNames) {
-//			System.out.println(className);
-//		}
-
 		new Navigator().getProperties();
 	}
 
@@ -53,6 +46,11 @@ public class Navigator {
 		return new PageCreator().getPage(list);
 	}
 
+	/**
+	* @Description:  扫描目录下带.properties的文件
+	* @return: java.util.List
+	* @Author: LJH
+	*/
 	private List getProperties(){
 		List<String> myClassName = new ArrayList<String>();
 		File file = new File("./");
@@ -71,5 +69,15 @@ public class Navigator {
 			}
 		}
 		return myClassName;
+	}
+
+	/**
+	* @Description:  由于没有提前想好有description的存在，只好分离description的写和读
+	* @Param: []
+	* @return: java.util.Map
+	* @Author: LJH
+	*/
+	private Map getDescription(){
+		return null;
 	}
 }

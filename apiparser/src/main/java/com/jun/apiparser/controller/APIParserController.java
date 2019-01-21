@@ -61,14 +61,20 @@ public class APIParserController {
 
 	@GetMapping("/create")
 	public String createNew(){
-		return "/create";
+		return "hi";
 	}
 
 	@RequestMapping(value="/create/exec")
 	@ResponseBody
 	public String createExec(HttpServletRequest req){
-		System.out.println(req.getParameter("1_name"));
-		System.out.println(req.getParameter("1_value"));
+		String res;
+		int i = 1;
+		do {
+			res = req.getParameter(i++ + "_name");
+			if(res!=null) {
+				System.out.println(res);
+			}
+		}while (res!=null);
 		return "gua";
 	}
 

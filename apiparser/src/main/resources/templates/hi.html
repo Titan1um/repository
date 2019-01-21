@@ -8,9 +8,17 @@
 <span>
     <a href="/api">首页</a><br>
 </span>
+<button class='btn' onclick="append();" >新增一行参数</button><br>
 <span id="params">
-    <label id="hey_label">hey</label> <input type="text" id="hey_text" value="hey"><br>
-    <label id = "res"></label>
+    <form action="/create/exec" method="POST">
+        <span id = "formA">
+        <input type="text" name="name" value="getCataSize" size="10"><input type="text" name="description" value="根据目录id获取空间" size="50"><br>
+        <input type="text" name="1_name" value="url" size="10"><input type="text" name="1_value" value="http://api.polyv.net/v2/cata/size" size="50"><br>
+        <input type="text" name="2_name" value="post/get" size="10"><input type="text" name="2_value" value="post" size="50"><br>
+        <input type="text" name="3_name" value="secretkey" size="10"><input type="text" name="3_value" value="qW4nvoVVi5" size="50"><br>
+        </span>
+        <input type="submit" value="提交">
+    </form>
 </span>
 
 
@@ -19,16 +27,13 @@
         document.getElementById("hey_label").innerHTML = "yo";
         document.getElementById("hey_text").value="yo";
     };
+    var count = 3;
     function append() {
-        document.getElementById("params").append("<label id=\"yo_label\">yo</label> <input type=\"text\" id=\"yo_text\" value=\"yo\"><br>");
-    };
-    function test() {
-        var res;
-        document.getElementById("res").innerHTML="";
+        count++;
+        var formA = document.getElementById("formA");
+        formA.innerHTML += "<input type=\"text\" name=\""+count+"_name\" value=\""+count+"\"  size=\"10\">";
+        formA.innerHTML += "<input type=\"text\" name=\""+count+"_value\" value=\""+count+"\"  size=\"50\"><br>";
     }
 </script>
-<button class='btn' onclick="changeT();" >change</button><br>
-<button class='btn' onclick="append();" >append</button><br>
-<button class='btn' onclick="test();" >test</button><br>
 </body>
 </html>

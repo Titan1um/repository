@@ -50,6 +50,12 @@ public class PropertiesCreator {
 		return true;
 	}
 
+	/**
+	* @Description:  主入口
+	* @Param: [name, list]
+	* @return: boolean
+	* @Author: LJH
+	*/
 	public boolean create(String name, List<String> list) {
 		if (!createFile(name)){
 			infoLogger.log("failed to create file.");
@@ -72,6 +78,12 @@ public class PropertiesCreator {
 		api.create("helloMTFK", strs);
 	}
 
+	/**
+	* @Description:  仅创建文件
+	* @Param: [fileName]
+	* @return: boolean
+	* @Author: LJH
+	*/
 	public boolean createFile(String fileName) {
 		file = new File(fileName + ".properties");
 		try {

@@ -32,7 +32,7 @@
                  <td>
                      <input type="text" name="2_value" value="post" size="40">
                  </td>
-                 <td><input type="text" name="1_checkbox" value="默认" size="10"></td>
+                 <td><input type="text" name="2_checkbox" value="默认" size="10"></td>
             </tr>
             <tr>
                 <td>3</td>
@@ -40,7 +40,7 @@
                 <td>
                     <input type="text" name="3_value" value="qW4nvoVVi5" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="默认" size="10"></td>
+                <td><input type="text" name="3_checkbox" value="默认" size="10"></td>
             </tr>
             <tr>
                 <td>4</td>
@@ -48,7 +48,7 @@
                 <td>
                     <input type="text" name="4_value" value="7ca55a3c6f" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="1" size="10"></td>
+                <td><input type="text" name="4_checkbox" value="1" size="10"></td>
             </tr>
             <tr>
                 <td>5</td>
@@ -56,7 +56,7 @@
                 <td>
                     <input type="text" name="5_value" value="1" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="1" size="10"></td>
+                <td><input type="text" name="5_checkbox" value="1" size="10"></td>
             </tr>
             <tr>
                 <td>6</td>
@@ -64,7 +64,7 @@
                 <td>
                     <input type="text" name="6_value" value="" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="1" size="10"></td>
+                <td><input type="text" name="6_checkbox" value="1" size="10"></td>
             </tr>
             <tr>
                 <td>7</td>
@@ -72,7 +72,7 @@
                 <td>
                     <input type="text" name="7_value" value="" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="" size="10"></td>
+                <td><input type="text" name="7_checkbox" value="" size="10"></td>
             </tr>
             <tr>
                 <td>8</td>
@@ -80,7 +80,7 @@
                 <td>
                     <input type="text" name="8_value" value="" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="" size="10"></td>
+                <td><input type="text" name="8_checkbox" value="" size="10"></td>
             </tr>
             <tr>
                 <td>9</td>
@@ -88,7 +88,7 @@
                 <td>
                     <input type="text" name="9_value" value="" size="40">
                 </td>
-                <td><input type="text" name="1_checkbox" value="" size="10"></td>
+                <td><input type="text" name="9_checkbox" value="" size="10"></td>
             </tr>
         </table>
         <tr>
@@ -99,6 +99,25 @@
                 </td>
         </tr>
     </form>
+
+    <button class='btn' onclick="append();" >新增一行参数</button><br>
+    <script>
+        var count = 9;
+        function append() {
+            count++;
+            var table = document.getElementById("tableA").innerHTML;
+            var str = "<tr>" +
+                "<td>count</td>" +
+                "<td><input type=\"text\" name=\""+count+"_name\" value=\"\" size=\"40\"></td>" +
+                "<td>" +
+                "<input type=\"text\" name=\""+count+"_value\" value=\"\" size=\"40\">" +
+                "</td>" +
+                "<td><input type=\"text\" name=\""+count+"_checkbox\" value=\"\" size=\"10\"></td>" +
+                "</tr>";
+            table += str;
+            console.log("1");
+        }
+    </script>
 </body>
 
 </html>
