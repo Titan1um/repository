@@ -3,7 +3,7 @@ package com.jun.apiparser.api;
 import static java.lang.String.valueOf;
 
 public class API_Cataid {
-	private String urlForGet = "http://api.polyv.net/v2/cata/size?userid={[[userid]]}&cataid={[[cataid]]}&ptime={[[ptime]]}&sign={[[sign]]}";
+	private String urlForGet = "http://api.polyv.net/v2/cata/size?userid={userid}&cataid={cataid}&ptime={ptime}&sign={sign}";
 	private boolean useDefaultValue = true;
 	private String userid = "7ca55a3c6f";
 	private String cataid = "1";

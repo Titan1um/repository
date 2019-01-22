@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class API_GetById {
-	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={[[vid]]}&readtoken={[[readtoken]]}";
+	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={vid}&readtoken={readtoken}";
 	private boolean useDefaultValue = true;
 	private String vid = "7ca55a3c6fb1f445d9ab845be127b10b_7";
 	private String readtoken = "66d670ea-c227-42dd-ac99-dd7dad85d23f";

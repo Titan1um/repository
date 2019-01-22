@@ -17,7 +17,7 @@ public class GetByIdTEST {
 	 * Get的访问url ,需要parser替换的用[[param name]]包围
 	 * 注意param name 要与变量名一致
 	 */
-	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={[[vid]]}&readtoken={[[readtoken]]}&hi={[[hi]]}";
+	private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={vid}&readtoken={readtoken}&hi={hi}";
 
 	/**
 	* @Description:  post url

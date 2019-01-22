@@ -46,6 +46,9 @@ public class APIParser {
 	public static void main(String[] args) {
 		try {
 			new APIParser().Parse("com.jun.apiparser.api.API_Cataid");
+			new APIParser().Parse("com.jun.apiparser.api.API_GetById");
+			new APIParser().Parse("com.jun.apiparser.api.API_GetVideoList");
+			new APIParser().Parse("com.jun.apiparser.api.API_PlayTimes");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -158,12 +161,12 @@ public class APIParser {
 			for (String key : NVP.keySet()) {
 				//处理_NotInSign后缀的参数
 				if (key.contains("_NotInSign")) {
-					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
-						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+					if (url.contains("{" + key.replace("_NotInSign", "") + "}")) {
+						url = url.replace(("{" + key.replace("_NotInSign", "") + "}"), NVP.get(key));
 					}
 				}
-				if (url.contains("{[[" + key + "]]}")) {
-					url = url.replace(("{[[" + key + "]]}"), NVP.get(key));
+				if (url.contains("{" + key + "}")) {
+					url = url.replace(("{" + key + "}"), NVP.get(key));
 				}
 			}
 			System.out.println("urlForGet:" + url);
@@ -180,8 +183,8 @@ public class APIParser {
 			//处理带_NotInSign参数
 			for (String key : NVP.keySet()) {
 				if (key.contains("_NotInSign")) {
-					if (url.contains("{[[" + key.replace("_NotInSign", "") + "]]}")) {
-						url = url.replace(("{[[" + key.replace("_NotInSign", "") + "]]}"), NVP.get(key));
+					if (url.contains("{" + key.replace("_NotInSign", "") + "}")) {
+						url = url.replace(("{" + key.replace("_NotInSign", "") + "}"), NVP.get(key));
 					}
 				}
 			}

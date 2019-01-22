@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class API_PlayTimes {
-	private String urlForPost = "http://api.polyv.net/v2/data/{[[userid]]}/play-times";
+	private String urlForPost = "http://api.polyv.net/v2/data/{userid}/play-times";
 	private boolean useDefaultValue = true;
 	private String userid_NotInSign = "7ca55a3c6f";
 	private String vids = "7ca55a3c6f493ba1f50bd8c672592518_7,7ca55a3c6fe48ad090ecab2a82957495_7";

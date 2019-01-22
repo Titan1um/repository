@@ -11,7 +11,7 @@ import static java.lang.String.valueOf;
 */
 @Component
 public class API_GetVideoList {
-	private String urlForPost = "http://api.polyv.net/v2/video/{[[userid]]}/get-new-list";
+	private String urlForPost = "http://api.polyv.net/v2/video/{userid}/get-new-list";
 	private boolean useDefaultValue = true;
 	private String catatree = "1";
 	private String userid_NotInSign = "7ca55a3c6f";

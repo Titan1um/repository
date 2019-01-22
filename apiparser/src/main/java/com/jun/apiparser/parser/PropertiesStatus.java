@@ -66,9 +66,9 @@ public class PropertiesStatus {
 		String[] strs = str.split("=");
 		//判断[0]  拼接[1],[2]....
 		String param = strs[0];
-		if(param.contains("_NotInSign")){
-			param = param.replace("_NotInSign", "");
-		}
+//		if(param.contains("_NotInSign")){
+//			param = param.replace("_NotInSign", "");
+//		}
 		switch (param) {
 			case "NoNeedForSign":
 				this.NoNeedForSign = true;
@@ -89,7 +89,6 @@ public class PropertiesStatus {
 				break;
 			case "secretkey":
 				this.secretkey= contact(strs);
-				System.out.println("==========================="+secretkey);
 				break;
 			case "description":
 				break;
