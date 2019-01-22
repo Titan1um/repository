@@ -13,16 +13,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @Description:  读取File/properties/读取调用参数
-* @Author: LJH
-*/
+ * @Description: 读取File/properties/读取调用参数
+ * @Author: LJH
+ */
 @Component
 public class PropertiesMapIOUtil {
 
 	/**
 	 * @TODO: 1.读取File/properties/读取调用参数
 	 * 2.分析文本(主要是生成get方式的url===========================================以及占位符类{userid}变{[[]]})
-	 *                                                   这个交给前端部分搞估计更舒服
+	 * 这个交给前端部分搞估计更舒服
 	 * 3.写入class(默认项1~2个 getter setter)
 	 * 4.重启生效
 	 * 5.提供删除API功能(可能会输错/故提供删除)
@@ -31,30 +31,30 @@ public class PropertiesMapIOUtil {
 	private File file;
 	/**
 	 * @Todo:
-	 *          @Autowired
+	 * @Autowired
 	 */
 	private InfoLogger infoLogger;
 	private OutputStreamWriter out;
 
 
-	public Map<String,String> getPropertie(String propertiy_name){
+	public Map<String, String> getPropertie(String propertiy_name) {
 		PropertiesStatus propertiesStatus = new PropertiesStatus();
 		propertiesStatus.PropertiesHandler(propertiy_name);
-		Map<String ,String> params = new LinkedHashMap<>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("url", propertiesStatus.url);
-		String post_get = (propertiesStatus.doGet)?"get":"post";
+		String post_get = (propertiesStatus.doGet) ? "get" : "post";
 		params.put("post/get", post_get);
-		propertiesStatus.params.keySet().stream().forEach((key)->params.put(key, propertiesStatus.params.get(key)));
+		propertiesStatus.params.keySet().stream().forEach((key) -> params.put(key, propertiesStatus.params.get(key)));
 		return params;
 	}
 
 
 	/**
-	 * @Description:  扫描目录下带.properties的文件
+	 * @Description: 扫描目录下带.properties的文件
 	 * @return: java.util.List
 	 * @Author: LJH
 	 */
-	public List getProperties(){
+	public List getProperties() {
 		List<String> myClassName = new ArrayList<String>();
 		File file = new File("./");
 		File[] childFiles = file.listFiles();
@@ -66,7 +66,7 @@ public class PropertiesMapIOUtil {
 				childFilePath = childFilePath.replace("/", ".");
 				childFilePath = childFilePath.replace("...", "");
 				childFilePath = childFilePath.replace("..", "");
-				if(childFilePath.contains(".properties")) {
+				if (childFilePath.contains(".properties")) {
 					childFilePath = childFilePath.replace(".properties", "");
 					myClassName.add(childFilePath);
 				}
@@ -95,17 +95,17 @@ public class PropertiesMapIOUtil {
 	}
 
 	/**
-	 * @Description:  主入口
+	 * @Description: 主入口
 	 * @Param: [name, list]
 	 * @return: boolean
 	 * @Author: LJH
 	 */
-	public boolean saveProperties(String name, Map<String,String> map) {
-		if (!createFile(name)){
+	public boolean saveProperties(String name, Map<String, String> map) {
+		if (!createFile(name+".properties")) {
 			infoLogger.log("failed to create file.");
 		}
-		for(String str : map.keySet()){
-			if (!write(str+"="+map.get(str)+"\n")){
+		for (String str : map.keySet()) {
+			if (!write(str + "=" + map.get(str) + "\n")) {
 				infoLogger.log("failed to write into file.");
 			}
 		}
@@ -121,7 +121,7 @@ public class PropertiesMapIOUtil {
 	public static void main(String[] args) {
 		//test
 		PropertiesMapIOUtil api = new PropertiesMapIOUtil();
-		Map<String,String> strs = new LinkedHashMap<>();
+		Map<String, String> strs = new LinkedHashMap<>();
 		strs.put("Line_One", "");
 		strs.put("Line_Two", null);
 		strs.put("Line_Three", "Line_Three");
@@ -129,17 +129,17 @@ public class PropertiesMapIOUtil {
 	}
 
 	/**
-	 * @Description:  仅创建文件
+	 * @Description: 仅创建文件
 	 * @Param: [fileName]
 	 * @return: boolean
 	 * @Author: LJH
 	 */
 	public boolean createFile(String fileName) {
-		file = new File(fileName + ".properties");
+		file = new File(fileName);
 		try {
 			if (!file.exists()) {
 				file.createNewFile();
-			}else {
+			} else {
 				infoLogger.log("File name conflict!");
 			}
 			out = new OutputStreamWriter(new FileOutputStream(file));
@@ -158,6 +158,25 @@ public class PropertiesMapIOUtil {
 		out.close();
 	}
 
+	public boolean saveDescription(String name, String description) {
+		if (!createFile(name+".description")) {
+			infoLogger.log("failed to create file.");
+		}
+		if (!write(description)) {
+			infoLogger.log("failed to write into file.");
+		}
+		try {
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public boolean getDescription(){
+		return true;
+	}
 
 
 }
