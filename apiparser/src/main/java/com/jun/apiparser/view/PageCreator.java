@@ -13,7 +13,8 @@ public class PageCreator {
 				"</head>\n" +
 				"<body>\n" +
 				"<span>\n" +
-				"    <a href=\"/api\">首页</a><br>\n" +
+				"    <a href=\"/api\">首页</a>" +"    <a href=\"/create\">新建</a>"+
+				"<br>\n" +
 				"</span>";
 		return prefix;
 	}
@@ -35,12 +36,6 @@ public class PageCreator {
 
 	private String body(String apis){
 		return apis;
-	}
-
-	public String getPage(List apis){
-		StringBuilder sb = new StringBuilder();
-		sb.append(prefix()).append(body(apis)).append(surfix());
-		return sb.toString();
 	}
 
 	public String getPage(String apis){

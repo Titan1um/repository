@@ -45,20 +45,24 @@ public class PropertyParser {
 
 	public static void main(String[] args) {
 
-		new PropertyParser().Parse("getVideoList");
+//		new PropertyParser().Parse("getVideoList");
 //		new PropertyParser().Parse("getCataId");
+//		new PropertyParser().Parse("getAuthByVid");
+		new PropertyParser().Parse("getVideoMsg");
+
 	}
 
 	/**
 	 * @Description: 目前测试主入口 日后需整合逻辑
 	 */
-	public void Parse(String fileName)  {
-		this.ParseInit(fileName);
+	public String Parse(String fileName)  {
+		ParseInit(fileName);
 		try {
-			this.ParseProcessing();
+			return ParseProcessing();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/**
@@ -66,7 +70,7 @@ public class PropertyParser {
 	 */
 	public void ParseInit(String fileName) {
 
-		if(!propertiesStatus.PropertiesHandler(fileName+".properties")){
+		if(!propertiesStatus.PropertiesHandler(fileName)){
 			System.out.println("Failed to get properties.");
 		}
 
@@ -75,7 +79,7 @@ public class PropertyParser {
 	/**
 	 * @Description: Step 5
 	 */
-	public void ParseProcessing() throws IOException {
+	public String ParseProcessing() throws IOException {
 		/**        -doGet还是doPost    最后处理                                                                         用不同方法,一个setEntity 一个算url
 		 *           -若需要自定参数 则(读properties/cmd输入)   不需读取默认值     (从特殊方法中获取值/传入/读取)         目前假设全用默认值(只有默认值方法)
 		 *            -读默认值则ifDefault   计算sign:sign的默认计算方法   NoNeed 则不执行  sign/hash 则执行对应方法    需要计算sign则计算 不需要则留为null
@@ -127,6 +131,7 @@ public class PropertyParser {
 			//执行doGet
 			String res = this.doGet(url);
 			System.out.println("Result:" + res);
+			return res;
 
 		} else {
 			//获取urlForPost
@@ -137,6 +142,8 @@ public class PropertyParser {
 					if (url.contains("{" + key.replace("_NotInSign", "") + "}")) {
 						url = url.replace(("{" + key.replace("_NotInSign", "") + "}"), NVP.get(key));
 					}
+				} else if (url.contains("{" + key + "}")) {
+					url = url.replace(("{" + key + "}"), NVP.get(key));
 				}
 			}
 			//将参数都放入做成NVP格式 方便做成entity
@@ -165,6 +172,8 @@ public class PropertyParser {
 			System.out.println("finalNVP:"+finalNVP);
 			System.out.println("urlForPost" + url);
 			System.out.println("Result:" + res);
+
+			return res;
 
 		}
 	}

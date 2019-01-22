@@ -1,112 +1,30 @@
 package com.jun.apiparser.parser;
 
 import com.jun.apiparser.utils.InfoLogger;
+import com.jun.apiparser.utils.PropertiesMapIOUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 读取文本/properties创建类
  * @Author: LJH
  */
+@Component
 public class PropertiesCreator {
-	/**
-	 * @TODO: 1.读取File/properties/读取调用参数
-			 * 2.分析文本(主要是生成get方式的url===========================================以及占位符类{userid}变{[[]]})
-	         *                                                   这个交给前端部分搞估计更舒服
-			 * 3.写入class(默认项1~2个 getter setter)
-			 * 4.重启生效
-			 * 5.提供删除API功能(可能会输错/故提供删除)
-			 * 6.生成源码demo
-	 */
-	private File file;
-	/**
-	 * @Todo:
-	 *          @Autowired
-	 */
-	private InfoLogger infoLogger;
-	private OutputStreamWriter out;
 
-	public PropertiesCreator() {
-		try {
-			infoLogger = new InfoLogger();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public boolean write(String str) {
-		try {
-			out.write(str);
-			out.flush();
-		} catch (IOException e) {
-			infoLogger.log(e.toString());
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	* @Description:  主入口
-	* @Param: [name, list]
-	* @return: boolean
-	* @Author: LJH
-	*/
-	public boolean create(String name, Map<String,String> map) {
-		if (!createFile(name)){
-			infoLogger.log("failed to create file.");
-		}
-		for(String str : map.keySet()){
-			if (!write(str+"="+map.get(str)+"\n")){
-				infoLogger.log("failed to write into file.");
-			}
-		}
-		return true;
-	}
-
-	public static void main(String[] args) {
-		//test
-		PropertiesCreator api = new PropertiesCreator();
-		Map<String,String> strs = new LinkedHashMap<>();
-		strs.put("Line_One", "");
-		strs.put("Line_Two", null);
-		strs.put("Line_Three", "Line_Three");
-		api.create("helloMTFK", strs);
-	}
-
-	/**
-	* @Description:  仅创建文件
-	* @Param: [fileName]
-	* @return: boolean
-	* @Author: LJH
-	*/
-	public boolean createFile(String fileName) {
-		file = new File(fileName + ".properties");
-		try {
-			if (!file.exists()) {
-				file.createNewFile();
-			}else {
-				infoLogger.log("File name conflict!");
-			}
-			out = new OutputStreamWriter(new FileOutputStream(file));
-		} catch (Exception e) {
-			infoLogger.log(e.toString());
-			return false;
-		}
-		file.setWritable(true);
-		return true;
-	}
-
+	@Autowired
+	PropertiesMapIOUtil ioUtil;
 
 	/**
 	* @Description: 入口函数 接受req并区别处理最后交付一个Map给create()
+	 *                  总步骤：接受所有参数  过滤参数  计算出url 返回map并保存
 	* @Param: [req]
 	* @return: boolean
 	* @Author: LJH
@@ -116,7 +34,8 @@ public class PropertiesCreator {
 		//TODO：先全收入map  再过滤  最后拼接url
 
 		Map<String,String> params_Origin = new LinkedHashMap<>();
-		MapNotNullSave(req.getParameter("name"), req.getParameter("description"), params_Origin);
+		MapNotNullSave("name", req.getParameter("name"), params_Origin);
+		MapNotNullSave("description", req.getParameter("description"), params_Origin);
 		String res = "";
 		for(int i = 1;res!=null;i++){
 			res = req.getParameter(i + "_name");
@@ -126,6 +45,8 @@ public class PropertiesCreator {
 				MapNotNullSave(req.getParameter(i + "_name"), req.getParameter(i + "_value"), params_Origin);
 			}
 		}
+		//Todo: check it and del
+		System.out.println(params_Origin);
 
 
 		Map<String,String> params = new LinkedHashMap<>();
@@ -135,7 +56,9 @@ public class PropertiesCreator {
 		for(String key : params_Origin.keySet()){
 			switch (key) {
 				case "name":
-					fileName = key;
+					fileName = params_Origin.get(key);
+					break;
+				case "description":
 					description = params_Origin.get(key);
 					break;
 				case "post/get":
@@ -147,29 +70,52 @@ public class PropertiesCreator {
 					break;
 				case "url":
 					break;
+/** @TODO:注意sign要不要过滤掉，过不过其实都行  现在不过滤，则改掉拼接那里默认加sign的操作
+				case "sign":
+					break;
+ */
 				default:
 					MapNotNullSave(key, params_Origin.get(key), params);
 					break;
 			}
 		}
+		//Todo: check it and del
+		System.out.println(params);
+
 		//拼接
 		if(params.containsKey("urlForGet")){
 			StringBuilder url = new StringBuilder();
 			url.append(params.get("urlForGet"));
 			url.append("?");
-			params.keySet().stream().forEach((key)->{
+			Set<String> strs = new HashSet<>();
+			params.keySet().stream().forEach((str)->strs.add(str));
+			strs.stream().forEach((key)->{
 				if(!key.equals("urlForGet")&&!key.equals("secretkey")&&!key.contains("_NotInSign")){
-					url.append(key+"={"+key+"}&");
+					if(!params.get("urlForGet").contains("{"+key+"}")) {
+						url.append(key+"={"+key+"}&");
+					}else{
+						params.put(key+"_NotInSign", params.get(key));
+						params.remove(key);
+					}
 				}
-			});//&
-			url.append("sign={sign}");//TODO:未规定格式
-			MapNotNullSave("urlForGet", url.toString(), params);
+			});//记得去掉最后的&
+			/**
+			 * Todo:不需要默认补齐sign 有则在url中，但不放入properties
+			 * url.append("sign={sign}")
+			 */
+
+			String result = url.toString();
+			result = result.substring(0, result.length()-1);
+
+			MapNotNullSave("urlForGet", result, params);
 		}
+		//Todo: check it and del
 		System.out.println("Params finished:"+params);
 
 
 		//写入
-		if (!create(fileName, params)){
+		params.remove("sign");
+		if (!ioUtil.saveProperties(fileName, params)){
 			return false;
 		}
 		//@Todo：此处应插入description
@@ -180,19 +126,13 @@ public class PropertiesCreator {
 		if(name != null) {
 			if(value == null) {
 				map.put(name, "");
+			}else if(name.equals("")){
+				;
 			}
 			else {
 				map.put(name, value);
 			}
 		}
 	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-		out.flush();
-		out.close();
-	}
-
 
 }

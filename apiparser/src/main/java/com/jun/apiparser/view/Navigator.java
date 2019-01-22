@@ -1,8 +1,10 @@
 package com.jun.apiparser.view;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import com.jun.apiparser.parser.PropertyParser;
+import com.jun.apiparser.utils.PropertiesMapIOUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,11 +13,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 * @Description:
 * @Author: LJH
 */
+@Component
 public class Navigator {
 
+	@Autowired
+	PropertiesMapIOUtil ioUtil;
 
 	public static void main(String[] args) {
-		new Navigator().getProperties();
+		System.out.println(new Navigator().getPage());
 	}
 
 	/**
@@ -25,7 +30,7 @@ public class Navigator {
 	*/
 	public String getPage(){
 
-		List apis = getProperties();
+		List apis = ioUtil.getProperties();
 		StringBuilder sb = new StringBuilder();
 		sb.append("<span>");
 //		apis.stream().sorted().forEach((name)->sb.append("<label id=\""+name+"_label\">"+name+"</label> <input type=\"text\" id=\""+name+"_text\" value=\""+"value"+"\"><br>"));
@@ -41,34 +46,17 @@ public class Navigator {
 	}
 
 	public String getPage(String str){
-		List list = new LinkedList();
-		list.add(str);
-		return new PageCreator().getPage(list);
-	}
-
-	/**
-	* @Description:  扫描目录下带.properties的文件
-	* @return: java.util.List
-	* @Author: LJH
-	*/
-	private List getProperties(){
-		List<String> myClassName = new ArrayList<String>();
-		File file = new File("./");
-		File[] childFiles = file.listFiles();
-		for (File childFile : childFiles) {
-			if (childFile.isDirectory()) {
-			} else {
-				String childFilePath = childFile.getPath();
-				childFilePath = childFilePath.replace("\\", ".");
-				childFilePath = childFilePath.replace("...", "");
-				childFilePath = childFilePath.replace("..", "");
-				if(childFilePath.contains(".properties")) {
-					childFilePath = childFilePath.replace(".properties", "");
-					myClassName.add(childFilePath);
-				}
-			}
-		}
-		return myClassName;
+		Map<String,String> params = ioUtil.getPropertie(str);
+		StringBuilder sb = new StringBuilder();
+		sb.append("<form action=\"/api/"+str+"/exec\" method=\"POST\">");
+		sb.append("<span>");
+		AtomicInteger count = new AtomicInteger(1);
+		params.keySet().stream().forEach((name) -> {
+			sb.append("<input name=\"" + count.get() + "_name\" size=\"10\" value=\""+name+"\"></label> <input type=\"text\" id=\"" + count.get() + "_value\" value=\"" + params.get(name) + "\"  size=\"50\"><br>");
+			count.incrementAndGet();
+		});
+		sb.append("<input type=\"submit\" value=\"提交\"></form></span>");
+		return new PageCreator().getPage(sb.toString());
 	}
 
 	/**
@@ -79,5 +67,11 @@ public class Navigator {
 	*/
 	private Map getDescription(){
 		return null;
+	}
+
+	public String getApiExecRes(String api){
+		String res = new PropertyParser().Parse(api);
+		String prefix = "<a href=\"/api\">首页</a><br>";
+		return prefix+res;
 	}
 }

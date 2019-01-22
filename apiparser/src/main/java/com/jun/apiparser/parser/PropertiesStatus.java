@@ -25,6 +25,7 @@ public class PropertiesStatus {
 	//public List<String> methods = new LinkedList<>();
 
 	public boolean PropertiesHandler(String fileName) {
+		fileName += ".properties";
 		if(!getProperties(fileName)){
 			System.out.println("Failed to open file and get properties.");
 			return  false;
@@ -104,7 +105,10 @@ public class PropertiesStatus {
 			sb.append("="+strs[i]);
 		}
 		String res = sb.toString();
-		return res.substring(1, res.length());
+		if(res.length()!=0){
+			return res.substring(1, res.length());
+		}
+		return "";
 	}
 
 }

@@ -8,7 +8,7 @@
 <span>
     <a href="/api">首页</a><br>
 </span>
-<button class='btn' onclick="append();" >新增一行参数</button><br>
+<button class='btn' onclick="appendV2();" >新增一行参数</button><br>
 <span id="params">
     <form action="/create/exec" method="POST">
         <span id = "formA">
@@ -31,9 +31,24 @@
     function append() {
         count++;
         var formA = document.getElementById("formA");
-        formA.innerHTML += "<input type=\"text\" name=\""+count+"_name\" value=\""+count+"\"  size=\"10\">";
+        formA.innerHTML += "<input type=\"text\" name=\""+count+"_name\" value=\""+"\"  size=\"10\">";
         formA.innerHTML += "<input type=\"text\" name=\""+count+"_value\" value=\""+count+"\"  size=\"50\"><br>";
-    }
+    };
+    function appendV2(){
+        count++;
+        // span = document.querySelector('#formA');
+        var span = document.getElementById("formA");
+        var newInput1 = document.createElement("input");
+        var newInput2 = document.createElement("input");
+        var br = document.createElement("br");
+        newInput1.name = count+"_name";
+        newInput1.size = 10;
+        newInput2.name = count+"_value";
+        newInput2.size = 50;
+        span.appendChild(newInput1);
+        span.appendChild(newInput2);
+        span.appendChild(br);
+    };
 </script>
 </body>
 </html>
