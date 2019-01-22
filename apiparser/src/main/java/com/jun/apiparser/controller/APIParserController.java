@@ -71,9 +71,9 @@ public class APIParserController {
 	@ResponseBody
 	public String createExec(HttpServletRequest req) {
 		if(propertiesCreator.createAPI(req)){
-			return "success!";
+			return  "<a href=\"/api\">首页</a><br>"+"success!";
 		}
-		return "failed to create api.";
+		return "<a href=\"/api\">首页</a><br>"+"failed to create api.";
 	}
 
 }
