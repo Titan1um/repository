@@ -58,8 +58,8 @@ public class APIParserController {
 
 	@RequestMapping(value="/api/{api}/exec",method= RequestMethod.POST)
 	@ResponseBody
-	public String navigatorExec(@PathVariable("api") String api) {
-		return navigator.getApiExecRes(api);
+	public String navigatorExec(@PathVariable("api") String api,HttpServletRequest req) {
+		return navigator.getApiExecRes(api,req);
 	}
 
 	@GetMapping("/create")

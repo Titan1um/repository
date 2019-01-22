@@ -25,7 +25,7 @@ public class DBManager {
 			e.printStackTrace();
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public String getDescription(String name){

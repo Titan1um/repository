@@ -48,6 +48,10 @@ public class PropertiesMapIOUtil {
 		params.put("url", propertiesStatus.url);
 		String post_get = (propertiesStatus.doGet) ? "get" : "post";
 		params.put("post/get", post_get);
+		params.put("secretkey", propertiesStatus.secretkey);
+		if (!propertiesStatus.NoNeedForSign) {
+			params.put("sign", "");
+		}
 		propertiesStatus.params.keySet().stream().forEach((key) -> params.put(key, propertiesStatus.params.get(key)));
 		return params;
 	}
