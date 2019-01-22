@@ -1,6 +1,8 @@
 package com.jun.apiparser.utils;
 
+import com.jun.apiparser.dao.DBManager;
 import com.jun.apiparser.parser.PropertiesStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -35,6 +37,8 @@ public class PropertiesMapIOUtil {
 	 */
 	private InfoLogger infoLogger;
 	private OutputStreamWriter out;
+	@Autowired
+	DBManager dbManager;
 
 
 	public Map<String, String> getPropertie(String propertiy_name) {
@@ -174,8 +178,8 @@ public class PropertiesMapIOUtil {
 		return true;
 	}
 
-	public boolean getDescription(){
-		return true;
+	public String  getDescription(String des){
+		return dbManager.getDescription(des);
 	}
 
 

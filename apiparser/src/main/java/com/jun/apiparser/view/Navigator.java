@@ -36,8 +36,8 @@ public class Navigator {
 //		apis.stream().sorted().forEach((name)->sb.append("<label id=\""+name+"_label\">"+name+"</label> <input type=\"text\" id=\""+name+"_text\" value=\""+"value"+"\"><br>"));
 		AtomicInteger count = new AtomicInteger();
 		apis.stream().sorted().forEach((name)->{
-			sb.append("<a href=\"/api/"+name+"\">"+name+"</a>    ");
-			if((count.get()!=0)&&(count.getAndIncrement()%5 == 0)){
+			sb.append("<a href=\"/api/"+name+"\">"+name+":"+ioUtil.getDescription(name.toString())+"</a>    ");
+			if((count.get()!=0)&&(count.getAndIncrement()%3 == 0)){
 				sb.append("<br>");
 			}
 		});
