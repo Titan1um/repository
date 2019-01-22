@@ -63,6 +63,7 @@ public class PropertiesMapIOUtil {
 			} else {
 				String childFilePath = childFile.getPath();
 				childFilePath = childFilePath.replace("\\", ".");
+				childFilePath = childFilePath.replace("/", ".");
 				childFilePath = childFilePath.replace("...", "");
 				childFilePath = childFilePath.replace("..", "");
 				if(childFilePath.contains(".properties")) {

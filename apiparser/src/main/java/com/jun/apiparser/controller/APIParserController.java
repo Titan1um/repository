@@ -52,7 +52,7 @@ public class APIParserController {
 	@GetMapping("/api/{api}")
 	@ResponseBody
 	public String navigator(@PathVariable("api") String api) {
-		System.out.println("2");
+		System.out.println(api);
 		return navigator.getPage(api);
 	}
 
