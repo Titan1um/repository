@@ -163,19 +163,7 @@ public class PropertiesMapIOUtil {
 	}
 
 	public boolean saveDescription(String name, String description) {
-		if (!createFile(name+".description")) {
-			infoLogger.log("failed to create file.");
-		}
-		if (!write(description)) {
-			infoLogger.log("failed to write into file.");
-		}
-		try {
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return true;
+		return dbManager.saveDescription(name, description);
 	}
 
 	public String  getDescription(String des){

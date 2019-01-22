@@ -37,7 +37,8 @@ public class Navigator {
 		AtomicInteger count = new AtomicInteger();
 		apis.stream().sorted().forEach((name)->{
 			sb.append("<a href=\"/api/"+name+"\">"+name+":"+ioUtil.getDescription(name.toString())+"</a>    ");
-			if((count.get()!=0)&&(count.getAndIncrement()%3 == 0)){
+			count.incrementAndGet();
+			if((count.get()!=0)&&(((count.get() % 3) == 0))){
 				sb.append("<br>");
 			}
 		});

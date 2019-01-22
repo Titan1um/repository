@@ -17,7 +17,7 @@ public class DBManager {
 	public boolean saveDescription(String name,String des){
 		try {
 			conn = connectUtil.getInstance();
-			PreparedStatement pst = conn.prepareStatement("insert into descrition(name,des) value(?,?);");
+			PreparedStatement pst = conn.prepareStatement("insert into description(name,des) value(?,?);");
 			pst.setString(1, name);
 			pst.setString(2, des);
 			pst.execute();
@@ -32,7 +32,7 @@ public class DBManager {
 		try{
 			conn = connectUtil.getInstance();
 			PreparedStatement pst = conn.prepareStatement("select des from description where name=?");
-			pst.setString(1, "name");
+			pst.setString(1, name);
 			ResultSet res = pst.executeQuery();
 			if(res.next()){
 				return res.getString(1);

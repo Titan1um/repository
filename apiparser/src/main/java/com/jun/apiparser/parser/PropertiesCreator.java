@@ -119,6 +119,9 @@ public class PropertiesCreator {
 			return false;
 		}
 		//@Todo：此处应插入description
+		if(!ioUtil.saveDescription(fileName, params_Origin.get("description"))){
+			return false;
+		}
 		return true;
 	}
 
