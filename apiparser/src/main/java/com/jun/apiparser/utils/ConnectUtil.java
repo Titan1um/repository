@@ -45,6 +45,7 @@ public class ConnectUtil {
 			return conn;
 		}else if (null == conn || conn.isClosed()){
 			Connect();
+			return conn;
 		}
 		return null;
 	}

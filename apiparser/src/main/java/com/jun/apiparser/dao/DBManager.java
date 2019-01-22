@@ -34,11 +34,14 @@ public class DBManager {
 			PreparedStatement pst = conn.prepareStatement("select des from description where name=?");
 			pst.setString(1, "name");
 			ResultSet res = pst.executeQuery();
-			return res.getString(1);
+			if(res.next()){
+				return res.getString(1);
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 			return "";
 		}
+		return "null";
 	}
 
 	@Override
