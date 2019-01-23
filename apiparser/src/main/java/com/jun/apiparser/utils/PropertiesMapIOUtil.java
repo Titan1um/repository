@@ -182,7 +182,10 @@ public class PropertiesMapIOUtil {
 			infoLogger.log("Delete a file that not exists.");
 			return "Delete a file that not exists.";
 		}
-		file.delete();
+		if(!file.delete()){
+			infoLogger.log("Failed to delete file.");
+			return "Failed to delete file.";
+		}
 		if(!file.exists()){
 			infoLogger.log("Successfully delete file:"+api+".properties");
 			return "Successfully delete file:"+api+".properties";

@@ -62,6 +62,7 @@ public class Navigator {
 			count.incrementAndGet();
 		});
 		sb.append("<input type=\"submit\" value=\"提交\"></form></span>");
+		sb.append("<a href=\"/api/"+str+"/dele\"><button class='btn'>删除此方法</button><br></a>");
 		return new PageCreator().getPage(sb.toString());
 	}
 
@@ -80,7 +81,6 @@ public class Navigator {
 		propertiesCreator.createAPI(req);
 
 		String res = new PropertyParser().Parse(api);
-		String prefix = "<a href=\"/api\">首页</a><br>";
-		return prefix+res;
+		return res;
 	}
 }

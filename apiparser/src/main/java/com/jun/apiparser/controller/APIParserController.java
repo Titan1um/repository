@@ -77,6 +77,7 @@ public class APIParserController {
 	}
 
 	@GetMapping("/api/{api}/dele")
+	@ResponseBody
 	public String dele(@PathVariable("api") String api){
 
 		return  "<a href=\"/api\">首页</a><br>"+propertiesCreator.deleteAPI(api);
