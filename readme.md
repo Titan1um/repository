@@ -22,6 +22,7 @@ APIParser:为点播的大部分用户接口提供一个通用的使用页面以�
                       缺点在于不能即时读取,要么新建接口后重启一次服务,要么实时class.forName(),用代码规约的注释来说就是一种魔法操作.
                       
                       使用示例:
+                      //类名 接口url 请求用到的参数 是否需要sign的空函数
                       public class API_GetById {
                           private String urlForGet = "http://v.polyv.net/uc/services/rest?method=getById&vid={vid}&readtoken={readtoken}";
                           private boolean useDefaultValue = true;
