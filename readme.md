@@ -10,7 +10,9 @@ APIParser:为点播的大部分用户接口提供一个通用的使用页面以�
                      6.根据 是 POST 还是 GET,调用setGET()/setPOST()       其中setGET是替换参数  setPost是将参数丢入entity
                      -发起请求
                      
-        -PropertiesParser类:与APIParser大致相同,用PropertiesStatus代替了MethodStatus和ParamStatus,对field与method的处理变成了文本的分割和处理
+        -PropertiesParser类:   1.与APIParser大致相同
+                               2.用PropertiesStatus代替了MethodStatus和ParamStatus,对field与method的处理变成了文本的分割和处理
+                               3.urlForGet生成更加智能,根据用户/使用者的输入自动生成待占位符的url,根据参数自动替换和判断是否参与sign拼接计算.
 
 
 
@@ -34,6 +36,6 @@ APIParser:为点播的大部分用户接口提供一个通用的使用页面以�
                 
                 2.文本/properties/数据库方式存储读取:
                         优点在于简易方便,使用和新建最多就填用户信息即可.虽然不能进行函数重载,但是点播的绝大部分接口都不需要这个功能.
-                        缺点在于说白了只是个文本解析器,便捷但不灵活,只能自动计算预想之内会出现的ptime,sign等值,日后添加具体功能并不能针对单个接口,只                           能整体去实现这个功能.
+                        缺点在于说白了只是个文本解析器,便捷但不灵活,只能自动计算预想之内会出现的ptime,sign等值,日后添加具体功能并不能针对单个接口,只能整体去实现这个功能.
                         
                         使用示例:http://39.108.65.230:8080/api
