@@ -138,4 +138,7 @@ public class PropertiesCreator {
 		}
 	}
 
+	public String deleteAPI(String api){
+		return ioUtil.deleteProperties(api);
+	}
 }

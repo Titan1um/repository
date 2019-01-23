@@ -45,7 +45,9 @@ public class PropertiesMapIOUtil {
 		PropertiesStatus propertiesStatus = new PropertiesStatus();
 		propertiesStatus.PropertiesHandler(propertiy_name);
 		Map<String, String> params = new LinkedHashMap<>();
-		params.put("url", propertiesStatus.url);
+		String url = propertiesStatus.url;
+		String[] str = url.split("\\?");
+		params.put("url", str[0]);
 		String post_get = (propertiesStatus.doGet) ? "get" : "post";
 		params.put("post/get", post_get);
 		params.put("secretkey", propertiesStatus.secretkey);
@@ -174,5 +176,19 @@ public class PropertiesMapIOUtil {
 		return dbManager.getDescription(des);
 	}
 
+	public String deleteProperties(String api){
+		file = new File(api+".properties");
+		if(!file.exists()){
+			infoLogger.log("Delete a file that not exists.");
+			return "Delete a file that not exists.";
+		}
+		file.delete();
+		if(!file.exists()){
+			infoLogger.log("Successfully delete file:"+api+".properties");
+			return "Successfully delete file:"+api+".properties";
+		}
+		infoLogger.log("Failed to delete in some way.");
+		return "Failed to delete in some way.";
+	}
 
 }

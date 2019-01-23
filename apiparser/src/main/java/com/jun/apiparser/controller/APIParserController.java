@@ -76,4 +76,10 @@ public class APIParserController {
 		return "<a href=\"/api\">首页</a><br>"+"failed to create api.";
 	}
 
+	@GetMapping("/api/{api}/dele")
+	public String dele(@PathVariable("api") String api){
+
+		return  "<a href=\"/api\">首页</a><br>"+propertiesCreator.deleteAPI(api);
+	}
+
 }
