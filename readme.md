@@ -1,4 +1,5 @@
-APIParser:为点播的大部分用户接口提供一个通用的使用页面以供测试客户使用情况
+APIParser:为点播的大部分用户接口提供一个通用的使用页面以供测试客户使用情况.
+
         核心类逻辑:
         -ApiParser类:1.总共有多少个API类可以写在properties中来读取(util.GetAllAPI已完成),自动化switch配置
                      2.反射读取所有变量,方法名
