@@ -150,7 +150,7 @@ public class PropertiesMapIOUtil {
 			if (!file.exists()) {
 				file.createNewFile();
 			} else {
-				infoLogger.log("File name conflict!");
+//				infoLogger.log("File name conflict!");
 			}
 			out = new OutputStreamWriter(new FileOutputStream(file));
 		} catch (Exception e) {

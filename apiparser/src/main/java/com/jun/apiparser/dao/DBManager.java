@@ -17,7 +17,7 @@ public class DBManager {
 	public boolean saveDescription(String name,String des){
 		try {
 			conn = connectUtil.getInstance();
-			PreparedStatement pst = conn.prepareStatement("insert into description(name,des) value(?,?);");
+			PreparedStatement pst = conn.prepareStatement("replace into description(name,des) values(?,?);");
 			pst.setString(1, name);
 			pst.setString(2, des);
 			pst.execute();
