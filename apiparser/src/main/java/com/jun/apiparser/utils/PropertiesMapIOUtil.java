@@ -184,7 +184,7 @@ public class PropertiesMapIOUtil {
 		}
 		if(!file.delete()){
 			infoLogger.log("Failed to delete file.");
-			return "Failed to delete file.";
+			return "Invalid File when delete";
 		}
 		if(!file.exists()){
 			infoLogger.log("Successfully delete file:"+api+".properties");
