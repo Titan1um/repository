@@ -29,13 +29,13 @@ public class DBManager {
 	}
 
 	public void save(String id, String pwd) throws SQLException {
-		String sql_query = "select * from kxpwd where id = ? & pwd = ?";
+		String sql_query = "select * from kxpwd where id = ? and pwd = ?";
 		PreparedStatement pst_query = conn.prepareStatement(sql_query);
 		pst_query.setString(1, id);
 		pst_query.setString(2, pwd);
 		ResultSet res_query = pst_query.executeQuery();
 		boolean isContain = false;
-		if (res_query.next()) {
+		if (res_query.last()) {
 			isContain = true;
 		}
 
