@@ -16,8 +16,8 @@ public class home {
 
 	@GetMapping("/pwd")
 	public String pwd(HttpServletRequest request){
-		System.out.println(request.getParameter("id"));
-		System.out.println(request.getParameter("pwd"));
+		System.out.println("id:"+request.getParameter("id"));
+		System.out.println("pwd"+request.getParameter("pwd"));
 		return "";
 	}
 }
